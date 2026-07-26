@@ -3,21 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JS-скрипти для браузера</title>
-  <meta name="description" content="Коротка інструкція та готові JS-скрипти для браузерної консолі." />
-  <link rel="stylesheet" href="assets/css/index.css" />
+  <title>JS-скрипти для браузера — інструкція та готові сніппети</title>
+  <meta name="description" content="Коротка інструкція, як запускати JavaScript у консолі браузера, та готові скрипти для копіювання в один клік." />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
+  <!-- ======================= HERO ======================= -->
   <header class="hero">
     <div class="container">
       <span class="badge">// JavaScript у console</span>
       <h1>Готові <span class="accent">JS-скрипти</span> для запуску в консолі</h1>
       <p>Коротка інструкція та колекція скриптів-помічників для тестів. Копіюй у один клік і встав у консоль браузера.</p>
       <a class="btn" href="#scripts">Перейти до скриптів ↓</a>
-      <a class="btn" href="poshuk.html">📱 Пошук відповідей</a>
+      <a class="btn" href="poshuk.html">📱 Пошук відповідей (з телефону)</a>
     </div>
   </header>
 
+  <!-- ======================= ІНСТРУКЦІЯ ======================= -->
   <section>
     <div class="container">
       <h2 class="section-title">Як запустити скрипт</h2>
@@ -28,7 +31,7 @@
           <div class="step-num">1</div>
           <div>
             <h3>Відкрий консоль</h3>
-            <p>Натисни <kbd>F12</kbd> або <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>J</kbd>.</p>
+            <p>Натисни <kbd>F12</kbd> (або <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>J</kbd>, на Mac — <kbd>Cmd</kbd>+<kbd>Option</kbd>+<kbd>J</kbd>) і перейди на вкладку <b>Console</b>.</p>
           </div>
         </div>
         <div class="step">
@@ -42,7 +45,7 @@
           <div class="step-num">3</div>
           <div>
             <h3>Встав у консоль</h3>
-            <p>Клікни в поле консолі та встав код: <kbd>Ctrl</kbd>+<kbd>V</kbd>.</p>
+            <p>Клікни в поле консолі та встав код: <kbd>Ctrl</kbd>+<kbd>V</kbd> (на Mac — <kbd>Cmd</kbd>+<kbd>V</kbd>).</p>
           </div>
         </div>
         <div class="step">
@@ -55,15 +58,16 @@
       </div>
 
       <div class="warning">
-        ⚠ Не вставляй у консоль код, якого не розумієш або який тобі надіслали незнайомці.
+        ⚠ Не вставляй у консоль код, якого не розумієш або який тобі надіслали незнайомці. Це може дати доступ до твоїх акаунтів.
       </div>
     </div>
   </section>
 
+  <!-- ======================= СКРИПТИ ======================= -->
   <section id="scripts">
     <div class="container">
       <h2 class="section-title">Готові скрипти</h2>
-      <p class="section-sub">Згруповані за категоріями. Натисни «Копіювати» і встав у консоль на потрібній сторінці.</p>
+      <p class="section-sub">Згруповані за категоріями. Натисни «Копіювати» і встав у консоль на потрібній сторінці запущеного тесту. Всі скрипти - автоматично обирають правильну відповідь.</p>
       <div id="cards"></div>
     </div>
   </section>
@@ -72,7 +76,12 @@
     <div class="container">Зроблено для швидкого запуску JS-скриптів у браузері</div>
   </footer>
 
-  <script src="assets/js/data.js"></script>
-  <script src="assets/js/index.js"></script>
+  <!--
+    База скриптів винесена в data/scripts-db.js — це окрема "база знань"
+    цієї сторінки. Щоб додати свій скрипт, відредагуй масив SCRIPTS_DB:
+    додай об'єкт { category, tag, title, desc, code }.
+  -->
+  <script src="data/scripts-db.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
