@@ -16,7 +16,8 @@
 
   const CATEGORY_LABELS = {
     LEAN: "Lean White Belt",
-    DANGER: "Небезпечні відправлення",
+    DANGER: "Небезпечні відправлення, Книга 2",
+    Book1:"Книга технології 1",
     SORTING: "Сортування на терміналах та депо",
     BDF: "Завантаження та вивантаження БДФ",
     UNKNOWN: "Робота з невпізнаним вантажем",
@@ -28,7 +29,7 @@
     const entries = [];
 
     // Категорії типу "питання -> відповідь"
-    ["LEAN", "DANGER", "SORTING", "BDF", "UNKNOWN", "SCANNING"].forEach((key) => {
+    ["LEAN", "DANGER", "Book1", "SORTING", "BDF", "UNKNOWN", "SCANNING"].forEach((key) => {
       const obj = db[key] || {};
       const cat = CATEGORY_LABELS[key];
       Object.entries(obj).forEach(([q, a]) => {
