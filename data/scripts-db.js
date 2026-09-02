@@ -79,8 +79,8 @@ const SCRIPTS_DB = [
 const CLICK_DELAY_MS = 150; // затримка між кліками (мс). Зміни це значення за потреби.
 
 function cleanText(t) {
-    return t.replace(/\u00a0/g, " ")
-            .replace(/[«»"“”]/g, '"')   // усі види лапок -> звичайна "
+    return t.replace(/ /g, " ")
+            .replace(/[«»"“”]/g, '"')
             .replace(/\s+/g, " ")
             .replace(/\\/g, "/")
             .trim();
@@ -125,7 +125,7 @@ document.querySelectorAll('[data-field="questionText"]').forEach(qEl => {
 // Крок 2: клікаємо по черзі із затримкою CLICK_DELAY_MS між кожним кліком
 function clickWithDelay(index) {
     if (index >= toClick.length) {
-        console.log(\`✅ Роботу завершено. Підсвічено: \${highlighted} | Автоматично обрано (клікнуто): \${clicked}\`);
+        console.log("✅ Роботу завершено. Підсвічено: " + highlighted + " | Автоматично обрано (клікнуто): " + clicked);
         return;
     }
 
