@@ -36,8 +36,7 @@ body {
     background: var(--bg);
     color: var(--text);
     font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
+    line-height: 1.6 -webkit-font-smoothing: antialiased;
 }
 
 code,
@@ -265,158 +264,158 @@ section {
    КАТЕГОРІЇ ТА КАРТКИ СКРИПТІВ
    ============================================================ */
 .cat-title {
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #58a6ff;
-  margin: 32px 0 12px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #58a6ff;
+    margin: 32px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
 }
 
-.cat-title:first-child { 
-  margin-top: 0; 
+.cat-title:first-child {
+    margin-top: 0;
 }
 
-#cards { 
-  display: grid; 
-  gap: 16px; 
+#cards {
+    display: grid;
+    gap: 16px;
 }
 
 .card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .card:hover {
-  transform: translateY(-3px);
-  border-color: #58a6ff;
+    transform: translateY(-3px);
+    border-color: #58a6ff;
 }
 
 .card-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  padding: 16px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 18px;
 }
 
 .card-head h3 {
-  color: var(--text-bright);
-  font-size: 16px;
-  margin-bottom: 4px;
+    color: var(--text-bright);
+    font-size: 16px;
+    margin-bottom: 4px;
 }
 
-.card-head p { 
-  color: var(--muted); 
-  font-size: 13.5px; 
+.card-head p {
+    color: var(--muted);
+    font-size: 13.5px;
 }
 
 /* Контейнер для бейджа та кнопки "Копіювати" */
 .card-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
 }
 
 .tag {
-  font-size: 12px;
-  color: #58a6ff;
-  background: rgba(56, 139, 253, 0.1);
-  border: 1px solid rgba(56, 139, 253, 0.3);
-  padding: 3px 9px;
-  border-radius: 12px;
-  white-space: nowrap;
+    font-size: 12px;
+    color: #58a6ff;
+    background: rgba(56, 139, 253, 0.1);
+    border: 1px solid rgba(56, 139, 253, 0.3);
+    padding: 3px 9px;
+    border-radius: 12px;
+    white-space: nowrap;
 }
 
 .copy-btn {
-  position: static;
-  background: var(--card-2);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 5px 12px;
-  font-size: 12.5px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.15s;
+    position: static;
+    background: var(--card-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
 }
 
 .copy-btn:hover {
-  background: #30363d;
-  color: var(--text-bright);
-  border-color: #8b949e;
+    background: #30363d;
+    color: var(--text-bright);
+    border-color: #8b949e;
 }
 
 .copy-btn.copied {
-  background: var(--accent);
-  color: #ffffff;
-  border-color: var(--accent);
+    background: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
 }
 
 /* ============================================================
    БЛОКИ З КОДОМ ТА КНОПКА РОЗГОРТАННЯ
    ============================================================ */
-.code-wrap { 
-  position: relative;
-  display: flex;
-  flex-direction: column;
+.code-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 pre {
-  background: #0d1117 !important;
-  border: none !important;
-  border-top: 1px solid var(--border) !important;
-  outline: none !important;
-  box-shadow: none !important;
-  padding: 16px 18px;
-  overflow-x: auto;
-  font-size: 13px;
-  line-height: 1.55;
-  color: #c9d1d9;
-  white-space: pre;
-  max-height: 320px;
+    background: #0d1117 !important;
+    border: none !important;
+    border-top: 1px solid var(--border) !important;
+    outline: none !important;
+    box-shadow: none !important;
+    padding: 16px 18px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #c9d1d9;
+    white-space: pre;
+    max-height: 320px;
 }
 
 /* Кнопка розгортання/згортання коду */
 .toggle-btn {
-  width: 100%;
-  background: var(--card-2);
-  color: var(--text);
-  border: none;
-  border-top: 1px solid var(--border);
-  padding: 8px 16px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  text-align: center;
-  transition: background 0.2s, color 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
+    width: 100%;
+    background: var(--card-2);
+    color: var(--text);
+    border: none;
+    border-top: 1px solid var(--border);
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
 
 .toggle-btn:hover {
-  background: #30363d;
-  color: var(--text-bright);
+    background: #30363d;
+    color: var(--text-bright);
 }
 
 /* Приховати pre у згорнутому стані */
 .code-wrap.collapsed pre {
-  display: none !important;
+    display: none !important;
 }
 
 footer {
-  text-align: center;
-  color: var(--muted);
-  font-size: 13px;
-  padding: 32px 0;
-  border-top: 1px solid var(--border);
-  margin-top: 32px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
 }

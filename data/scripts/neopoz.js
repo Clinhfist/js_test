@@ -7,16 +7,14 @@ const QA = {
     // Тут виправлено лапки: \"довезення...\"
     "Що необхідно зробити після реєстрації \"довезення частково втраченого вантажу\"?": "Зателефонувати до підрозділу одержувача та проінформувати,  продублювати інформацію в листі з номером ЕН, по якому вібувається довезення вантажу."
 };
-
 const CLICK_DELAY_MS = 100;
 
 function cleanText(t) {
     return t.replace(/\u00a0/g, " ")
-            .replace(/\s+/g, " ")
-            .replace(/\\/g, "/")
-            .trim();
+        .replace(/\s+/g, " ")
+        .replace(/\\/g, "/")
+        .trim();
 }
-
 // Функція для пошуку елементів на сторінці та всередині iFrames
 function queryAllEverywhere(selector, doc = document) {
     let elements = Array.from(doc.querySelectorAll(selector));
@@ -31,58 +29,45 @@ function queryAllEverywhere(selector, doc = document) {
     }
     return elements;
 }
-
 let highlighted = 0;
 let clicked = 0;
 const toClick = [];
-
 // Крок 1: Збір та підсвічування
 const questions = queryAllEverywhere('[data-field="questionText"]');
-
 questions.forEach(qEl => {
     const qTextRaw = cleanText(qEl.textContent);
-
     const entry = Object.entries(QA).find(([key]) => {
         return cleanText(key).replace(/[?:;]$/, "") === qTextRaw.replace(/[?:;]$/, "");
     });
-
     if (!entry) return;
     const correctAnswer = cleanText(entry[1]);
-
-    const card = qEl.closest('.question-card') || qEl.parentElement?.parentElement?.parentElement?.parentElement || qEl.parentNode;
-
+    const card = qEl.closest('.question-card') || qEl.parentElement ? .parentElement ? .parentElement ? .parentElement || qEl.parentNode;
     if (card) {
         card.querySelectorAll('[data-field="optionText"], .text.resizeable-text').forEach(opt => {
             if (cleanText(opt.textContent) === correctAnswer) {
                 opt.style.cssText = "background: #c8f7c5 !important; border: 2px solid #2ecc71 !important; border-radius: 4px; font-weight: bold;";
                 highlighted++;
-
                 const input = opt.closest('label') || opt.parentElement.querySelector('input') || opt.querySelector('input');
                 const clickTarget = input || opt.closest('.option-row') || opt.closest('.cs-button') || opt;
-
                 toClick.push(clickTarget);
             }
         });
     }
 });
-
 // Крок 2: Виконання кліків
 function clickWithDelay(index) {
     if (index >= toClick.length) {
         console.log(`✅ Роботу завершено. Підсвічено: ${highlighted} | Клікнуто: ${clicked}`);
         return;
     }
-
     try {
         toClick[index].click();
         clicked++;
     } catch (e) {
         console.error("Не вдалося клікнути елемент", toClick[index], e);
     }
-
     setTimeout(() => clickWithDelay(index + 1), CLICK_DELAY_MS);
 }
-
 if (toClick.length > 0) {
     clickWithDelay(0);
 } else {

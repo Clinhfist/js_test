@@ -1,62 +1,72 @@
 :root {
-  --bg: #0d1117;           /* Глибокий темний фон */
-  --card: #161b22;         /* Фон карток відповідей */
-  --card-2: #21262d;       /* Внутрішній блок відповіді */
-  --border: #30363d;       /* Акуратна темна рамка */
-  --text: #c9d1d9;         /* М'який білий текст */
-  --text-bright: #f0f6fc;  /* Чіткий білий колір */
-  --muted: #8b949e;        /* Приглушений сірий */
-  --accent: #238636;       /* Зелений акцент для кнопок та активних елементів */
-  --accent-hover: #2ea043;
-  --tag: #21262d;          /* Фон для звичайних чипів */
-  --radius: 12px;
-  --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --bg: #0d1117;
+    /* Глибокий темний фон */
+    --card: #161b22;
+    /* Фон карток відповідей */
+    --card-2: #21262d;
+    /* Внутрішній блок відповіді */
+    --border: #30363d;
+    /* Акуратна темна рамка */
+    --text: #c9d1d9;
+    /* М'який білий текст */
+    --text-bright: #f0f6fc;
+    /* Чіткий білий колір */
+    --muted: #8b949e;
+    /* Приглушений сірий */
+    --accent: #238636;
+    /* Зелений акцент для кнопок та активних елементів */
+    --accent-hover: #2ea043;
+    --tag: #21262d;
+    /* Фон для звичайних чипів */
+    --radius: 12px;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
-* { 
-  box-sizing: border-box; 
-  -webkit-tap-highlight-color: transparent; 
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
-html, body { 
-  margin: 0; 
-  padding: 0; 
+html,
+body {
+    margin: 0;
+    padding: 0;
 }
 
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  min-height: 100vh;
-  padding: 0 0 env(safe-area-inset-bottom);
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+    padding: 0 0 env(safe-area-inset-bottom);
 }
 
 /* ============================================================
    СТИЛІЗАЦІЯ СКРОЛБАРІВ
    ============================================================ */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+    width: 6px;
+    height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0d1117;
+    background: #0d1117;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #30363d;
-  border-radius: 4px;
+    background: #30363d;
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #484f58;
+    background: #484f58;
 }
 
-.wrap { 
-  max-width: 640px; 
-  margin: 0 auto; 
-  padding: 16px; 
+.wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 16px;
 }
 
 /* ============================================================
@@ -68,287 +78,290 @@ input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration {
-  -webkit-appearance: none;
-  appearance: none;
-  display: none;
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
 }
 
 /* Приховує стандартний хрестик очищення у браузерах Edge / IE */
 input[type="search"]::-ms-clear,
 input[type="search"]::-ms-reveal {
-  display: none;
-  width: 0;
-  height: 0;
+    display: none;
+    width: 0;
+    height: 0;
 }
 
 .topbar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: rgba(13, 17, 23, 0.92);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border);
-  padding-top: env(safe-area-inset-top);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(13, 17, 23, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding-top: env(safe-area-inset-top);
 }
 
-.topbar-inner { 
-  max-width: 640px; 
-  margin: 0 auto; 
-  padding: 12px 16px; 
+.topbar-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 12px 16px;
 }
 
-.row { 
-  display: flex; 
-  align-items: center; 
-  gap: 10px; 
+.row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .back {
-  display: inline-flex; 
-  align-items: center; 
-  gap: 6px;
-  color: #58a6ff; 
-  text-decoration: none;
-  font-size: 14px; 
-  font-weight: 600;
-  padding: 6px 0;
-  transition: color 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #58a6ff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 6px 0;
+    transition: color 0.15s ease;
 }
 
-.back:hover, .back:active { 
-  color: #79c0ff; 
+.back:hover,
+.back:active {
+    color: #79c0ff;
 }
 
-h1 { 
-  font-size: 18px; 
-  margin: 4px 0 12px; 
-  font-weight: 700; 
-  color: var(--text-bright);
+h1 {
+    font-size: 18px;
+    margin: 4px 0 12px;
+    font-weight: 700;
+    color: var(--text-bright);
 }
 
-.search-box { 
-  position: relative; 
+.search-box {
+    position: relative;
 }
 
 .search-input {
-  width: 100%;
-  font-size: 16px; /* >=16px запобігає зуму на iOS */
-  padding: 12px 40px 12px 14px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text-bright);
-  outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
+    width: 100%;
+    font-size: 16px;
+    /* >=16px запобігає зуму на iOS */
+    padding: 12px 40px 12px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text-bright);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.search-input::placeholder { 
-  color: var(--muted); 
+.search-input::placeholder {
+    color: var(--muted);
 }
 
 .search-input:focus {
-  border-color: #58a6ff;
-  box-shadow: 0 0 0 3px rgba(56, 139, 253, 0.18);
+    border-color: #58a6ff;
+    box-shadow: 0 0 0 3px rgba(56, 139, 253, 0.18);
 }
 
 .clear-btn {
-  position: absolute; 
-  right: 8px; 
-  top: 50%; 
-  transform: translateY(-50%);
-  width: 28px; 
-  height: 28px; 
-  border: none; 
-  border-radius: 50%;
-  background: var(--card-2); 
-  color: var(--muted);
-  font-size: 16px; 
-  line-height: 1; 
-  cursor: pointer;
-  display: none; 
-  align-items: center; 
-  justify-content: center;
-  transition: all 0.15s;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    background: var(--card-2);
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
 }
 
 .clear-btn:hover {
-  background: #30363d;
-  color: var(--text-bright);
+    background: #30363d;
+    color: var(--text-bright);
 }
 
-.clear-btn.show { 
-  display: flex; 
+.clear-btn.show {
+    display: flex;
 }
 
-.meta { 
-  color: var(--muted); 
-  font-size: 13px; 
-  margin: 10px 2px 4px; 
+.meta {
+    color: var(--muted);
+    font-size: 13px;
+    margin: 10px 2px 4px;
 }
 
 /* ============================================================
    ЧИПИ КАТЕГОРІЙ
    ============================================================ */
-.chips { 
-  display: flex; 
-  gap: 8px; 
-  overflow-x: auto; 
-  padding: 8px 0 2px; 
-  margin: 0 -2px; 
-  scrollbar-width: none; 
+.chips {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 8px 0 2px;
+    margin: 0 -2px;
+    scrollbar-width: none;
 }
 
-.chips::-webkit-scrollbar { 
-  display: none; 
+.chips::-webkit-scrollbar {
+    display: none;
 }
 
 .chip {
-  flex: 0 0 auto;
-  font-size: 12.5px; 
-  font-weight: 600;
-  padding: 6px 12px; 
-  border-radius: 999px;
-  border: 1px solid var(--border); 
-  background: var(--card);
-  color: var(--muted); 
-  cursor: pointer; 
-  white-space: nowrap;
-  transition: all 0.15s ease;
+    flex: 0 0 auto;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
 }
 
 .chip:hover {
-  border-color: #8b949e;
-  color: var(--text-bright);
+    border-color: #8b949e;
+    color: var(--text-bright);
 }
 
-.chip.active { 
-  background: rgba(56, 139, 253, 0.15); 
-  color: #58a6ff; 
-  border-color: rgba(56, 139, 253, 0.4); 
+.chip.active {
+    background: rgba(56, 139, 253, 0.15);
+    color: #58a6ff;
+    border-color: rgba(56, 139, 253, 0.4);
 }
 
 /* ============================================================
    КАРТКИ РЕЗУЛЬТАТІВ
    ============================================================ */
-.results { 
-  display: flex; 
-  flex-direction: column; 
-  gap: 12px; 
-  margin-top: 12px; 
+.results {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
 }
 
 .card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px;
-  box-shadow: var(--shadow);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    box-shadow: var(--shadow);
 }
 
 /* Бейдж категорії на картці */
 .card-cat {
-  display: inline-block;
-  font-size: 11px; 
-  font-weight: 600; 
-  letter-spacing: 0.02em;
-  color: #58a6ff;
-  background: rgba(56, 139, 253, 0.1);
-  border: 1px solid rgba(56, 139, 253, 0.3);
-  padding: 2px 8px; 
-  border-radius: 999px;
-  margin-bottom: 10px;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #58a6ff;
+    background: rgba(56, 139, 253, 0.1);
+    border: 1px solid rgba(56, 139, 253, 0.3);
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-bottom: 10px;
 }
 
-.q { 
-  font-size: 14px; 
-  color: var(--muted); 
-  margin: 0 0 8px; 
+.q {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0 0 8px;
 }
 
-.q b { 
-  color: var(--text-bright); 
-  font-weight: 600; 
+.q b {
+    color: var(--text-bright);
+    font-weight: 600;
 }
 
-.a-label { 
-  font-size: 11px; 
-  text-transform: uppercase; 
-  letter-spacing: 0.06em; 
-  color: var(--muted); 
-  margin-bottom: 4px; 
+.a-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 4px;
 }
 
 .a {
-  font-size: 15px; 
-  font-weight: 600; 
-  color: var(--text-bright);
-  background: var(--card-2);
-  border-left: 3px solid #3fb950;
-  border-radius: 6px;
-  padding: 10px 12px;
-  word-break: break-word;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-bright);
+    background: var(--card-2);
+    border-left: 3px solid #3fb950;
+    border-radius: 6px;
+    padding: 10px 12px;
+    word-break: break-word;
 }
 
 /* Кнопка скопіювати */
 .copy {
-  margin-top: 10px;
-  width: 100%;
-  display: inline-flex; 
-  align-items: center; 
-  justify-content: center; 
-  gap: 8px;
-  font-size: 13.5px; 
-  font-weight: 600;
-  padding: 9px 14px; 
-  border-radius: 8px;
-  border: 1px solid var(--border); 
-  background: var(--card-2); 
-  color: var(--text-bright);
-  cursor: pointer; 
-  transition: all 0.15s ease;
+    margin-top: 10px;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    padding: 9px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card-2);
+    color: var(--text-bright);
+    cursor: pointer;
+    transition: all 0.15s ease;
 }
 
-.copy:hover { 
-  background: #30363d; 
-  border-color: #8b949e; 
+.copy:hover {
+    background: #30363d;
+    border-color: #8b949e;
 }
 
-.copy:active, .copy.done { 
-  background: var(--accent); 
-  color: #ffffff; 
-  border-color: var(--accent); 
+.copy:active,
+.copy.done {
+    background: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
 }
 
-mark { 
-  background: rgba(56, 139, 253, 0.25); 
-  color: #58a6ff; 
-  border-radius: 3px; 
-  padding: 0 2px; 
+mark {
+    background: rgba(56, 139, 253, 0.25);
+    color: #58a6ff;
+    border-radius: 3px;
+    padding: 0 2px;
 }
 
-.empty { 
-  text-align: center; 
-  color: var(--muted); 
-  padding: 40px 16px; 
+.empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 40px 16px;
 }
 
-.empty .big { 
-  font-size: 15px; 
-  color: var(--text-bright); 
-  margin-bottom: 6px; 
+.empty .big {
+    font-size: 15px;
+    color: var(--text-bright);
+    margin-bottom: 6px;
 }
 
 .hint {
-  background: var(--card); 
-  border: 1px solid var(--border); 
-  border-radius: var(--radius);
-  padding: 14px; 
-  color: var(--muted); 
-  font-size: 13.5px; 
-  margin-top: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    color: var(--muted);
+    font-size: 13.5px;
+    margin-top: 14px;
 }
 
-.hint b { 
-  color: var(--text-bright); 
+.hint b {
+    color: var(--text-bright);
 }
