@@ -42,76 +42,232 @@ const QA = {
     "Як потрібно вчинити (що робити) працівнику компанії при виявленні вантажу, що заборонений до приймання:": "ввічливо відмовити в прийманні посилки",
     "Яким чином повинен бути укомплектований балон, аби його можна було прийняти до транспортування?": "балони з від'єднаною від них запірною арматурою (вентилем, штоком та клапаном)"
 };
-// ===== Налаштування затримки =====
+// ============================================================
+// НАЛАШТУВАННЯ
+// ============================================================
 const CLICK_DELAY_MS = 100;
-// Агресивна нормалізація: залишаємо лише літери й цифри, все інше (апострофи
-// прямі/фігурні, крапки, коми, дужки, пробіли, зворотні слеші) відкидаємо.
-// Це і був корінь проблеми з LEAN/AWIS раніше — тут той самий фікс.
-function normalize(t) {
-    return t
+// ============================================================
+// НОРМАЛІЗАЦІЯ ТЕКСТУ
+// ============================================================
+function normalize(text) {
+    return String(text ? ? "")
         .toLowerCase()
         .normalize("NFKC")
-        .replace(/[^\p{L}\p{N}]/gu, "");
+        .replace(/[’‘ʼ`]/g, "'")
+        .replace(/[–—−]/g, "-")
+        .replace(/[\/\\]/g, "")
+        .replace(/\s+/g, "")
+        .replace(/[^\p{L}\p{N}'-]/gu, "");
 }
+// ============================================================
+// ПІДГОТОВКА БАЗИ ПИТАНЬ
+// ============================================================
+const qaNormalized = Object.entries(QA).map(([question, answer]) => ({
+    question,
+    answer,
+    questionNormalized: normalize(question),
+    answerNormalized: normalize(answer)
+}));
+// ============================================================
+// СТАТИСТИКА
+// ============================================================
 let highlighted = 0;
 let clicked = 0;
 const unmatchedQuestions = [];
-const unmatchedOptions = [];
-const qaNormalized = Object.entries(QA).map(([q, a]) => ({
-    qNorm: normalize(q),
-    qOrig: q,
-    aNorm: normalize(a),
-    aOrig: a
-}));
-const toClick = [];
-document.querySelectorAll('[data-field="questionText"]').forEach(qEl => {
-    const qTextRaw = qEl.textContent;
-    const qNorm = normalize(qTextRaw);
-    const entry = qaNormalized.find(e => e.qNorm === qNorm);
+const unmatchedAnswers = [];
+const clickQueue = [];
+// ============================================================
+// ПОШУК ПИТАНЬ
+// ============================================================
+const questionElements = document.querySelectorAll(
+    '[data-field="questionText"]'
+);
+console.log(`🔎 Знайдено питань на сторінці: ${questionElements.length}`);
+console.log(`📚 Питань у базі: ${qaNormalized.length}`);
+// ============================================================
+// ОБРОБКА КОЖНОГО ПИТАННЯ
+// ============================================================
+questionElements.forEach((questionElement, questionIndex) => {
+    const questionText = questionElement.textContent.trim();
+    const questionNormalized = normalize(questionText);
+    // Точний збіг
+    let entry = qaNormalized.find(
+        item => item.questionNormalized === questionNormalized
+    );
+    // Якщо точного збігу немає, пробуємо частковий
     if (!entry) {
-        unmatchedQuestions.push(qTextRaw.trim());
-        return;
+        entry = qaNormalized.find(item =>
+            questionNormalized.includes(item.questionNormalized) ||
+            item.questionNormalized.includes(questionNormalized)
+        );
     }
-    const card = qEl.closest('.question-card') ||
-        qEl.closest('[class*="question"]') ||
-        qEl.parentElement ? .parentElement ? .parentElement ? .parentElement;
-    if (!card) {
-        console.warn("⚠️ Не знайдено картку питання для:", qTextRaw.trim());
-        return;
-    }
-    let foundOption = false;
-    card.querySelectorAll('[data-field="optionText"]').forEach(opt => {
-        if (normalize(opt.textContent) === entry.aNorm) {
-            opt.style.cssText = "background: #c8f7c5 !important; border: 2px solid #2ecc71 !important; border-radius: 4px; font-weight: bold;";
-            highlighted++;
-            foundOption = true;
-            const input = opt.closest('label') || opt.parentElement ? .querySelector('input') || opt.querySelector('input');
-            const clickTarget = input || opt.closest('.option-row') || opt.closest('label') || opt;
-            toClick.push(clickTarget);
-        }
-    });
-    if (!foundOption) {
-        unmatchedOptions.push({
-            question: entry.qOrig,
-            expectedAnswer: entry.aOrig,
-            actualOptions: Array.from(card.querySelectorAll('[data-field="optionText"]')).map(o => o.textContent.trim())
+    // Питання не знайдено
+    if (!entry) {
+        unmatchedQuestions.push({
+            index: questionIndex + 1,
+            question: questionText
         });
+        console.warn(
+            `❌ Питання №${questionIndex + 1} не знайдено в базі:`,
+            questionText
+        );
+        return;
     }
-});
-
-function clickWithDelay(index) {
-    if (index >= toClick.length) {
-        console.log(`✅ Роботу завершено. Підсвічено: ${highlighted} | Клікнуто: ${clicked}`);
-        if (unmatchedQuestions.length) {
-            console.warn(`⚠️ Питання без збігу в словнику (${unmatchedQuestions.length}):`, unmatchedQuestions);
+    // ========================================================
+    // ПОШУК КАРТКИ ПИТАННЯ
+    // ========================================================
+    const card =
+        questionElement.closest(".question-card") ||
+        questionElement.closest('[class*="question"]') ||
+        questionElement.parentElement ? .parentElement ? .parentElement ? .parentElement;
+    if (!card) {
+        console.warn(
+            `⚠️ Не знайдено картку для питання №${questionIndex + 1}:`,
+            questionText
+        );
+        return;
+    }
+    // ========================================================
+    // ПОШУК ВАРІАНТА ВІДПОВІДІ
+    // ========================================================
+    const options = Array.from(
+        card.querySelectorAll('[data-field="optionText"]')
+    );
+    let answerElement = null;
+    for (const option of options) {
+        const optionText = option.textContent.trim();
+        const optionNormalized = normalize(optionText);
+        if (
+            optionNormalized === entry.answerNormalized ||
+            optionNormalized.includes(entry.answerNormalized) ||
+            entry.answerNormalized.includes(optionNormalized)
+        ) {
+            answerElement = option;
+            break;
         }
-        if (unmatchedOptions.length) {
-            console.warn(`⚠️ Питання знайдено, але відповідь не збіглась (${unmatchedOptions.length}):`, unmatchedOptions);
+    }
+    // ========================================================
+    // ВІДПОВІДЬ НЕ ЗНАЙДЕНА
+    // ========================================================
+    if (!answerElement) {
+        unmatchedAnswers.push({
+            question: entry.question,
+            expectedAnswer: entry.answer,
+            actualOptions: options.map(
+                option => option.textContent.trim()
+            )
+        });
+        console.warn(
+            `❌ Не знайдено відповідь для питання №${questionIndex + 1}:`,
+            questionText
+        );
+        console.warn(
+            "Очікувана відповідь:",
+            entry.answer
+        );
+        console.warn(
+            "Варіанти на сторінці:",
+            options.map(option => option.textContent.trim())
+        );
+        return;
+    }
+    // ========================================================
+    // ПІДСВІЧУВАННЯ
+    // ========================================================
+    answerElement.style.setProperty(
+        "background",
+        "#c8f7c5",
+        "important"
+    );
+    answerElement.style.setProperty(
+        "border",
+        "2px solid #2ecc71",
+        "important"
+    );
+    answerElement.style.setProperty(
+        "border-radius",
+        "4px",
+        "important"
+    );
+    answerElement.style.setProperty(
+        "font-weight",
+        "bold",
+        "important"
+    );
+    highlighted++;
+    // ========================================================
+    // ВИЗНАЧЕННЯ ЕЛЕМЕНТА ДЛЯ КЛІКУ
+    // ========================================================
+    const input =
+        answerElement.closest("label") ||
+        answerElement.parentElement ? .querySelector("input") ||
+        answerElement.querySelector("input");
+    const clickTarget =
+        input ||
+        answerElement.closest(".option-row") ||
+        answerElement.closest("label") ||
+        answerElement;
+    clickQueue.push({
+        target: clickTarget,
+        question: entry.question,
+        answer: entry.answer
+    });
+});
+// ============================================================
+// ПОСЛІДОВНИЙ КЛІК
+// ============================================================
+function clickWithDelay(index = 0) {
+    if (index >= clickQueue.length) {
+        console.log("");
+        console.log("========================================");
+        console.log("✅ РОБОТУ ЗАВЕРШЕНО");
+        console.log("========================================");
+        console.log(`📋 Питань на сторінці: ${questionElements.length}`);
+        console.log(`🟢 Знайдено відповідей: ${clickQueue.length}`);
+        console.log(`🎨 Підсвічено: ${highlighted}`);
+        console.log(`🖱️ Клікнуто: ${clicked}`);
+        console.log(`❌ Питань без збігу: ${unmatchedQuestions.length}`);
+        console.log(`❌ Відповідей без збігу: ${unmatchedAnswers.length}`);
+        if (unmatchedQuestions.length > 0) {
+            console.warn("");
+            console.warn("========== ПИТАННЯ БЕЗ ЗБІГУ ==========");
+            unmatchedQuestions.forEach(item => {
+                console.warn(
+                    `№${item.index}: ${item.question}`
+                );
+            });
+        }
+        if (unmatchedAnswers.length > 0) {
+            console.warn("");
+            console.warn("========== ВІДПОВІДІ БЕЗ ЗБІГУ ==========");
+            unmatchedAnswers.forEach(item => {
+                console.warn("Питання:", item.question);
+                console.warn("Очікувалось:", item.expectedAnswer);
+                console.warn("На сторінці:", item.actualOptions);
+            });
         }
         return;
     }
-    toClick[index].click();
-    clicked++;
-    setTimeout(() => clickWithDelay(index + 1), CLICK_DELAY_MS);
+    const item = clickQueue[index];
+    try {
+        item.target.click();
+        clicked++;
+        console.log(
+            `🖱️ ${index + 1}/${clickQueue.length}:`,
+            item.answer
+        );
+    } catch (error) {
+        console.error(
+            `❌ Помилка кліку №${index + 1}:`,
+            error
+        );
+    }
+    setTimeout(
+        () => clickWithDelay(index + 1),
+        CLICK_DELAY_MS
+    );
 }
-clickWithDelay(0);
+// ============================================================
+// ЗАПУСК
+// ============================================================
+clickWithDelay();
