@@ -17,13 +17,13 @@
   const CATEGORY_LABELS = {
     LEAN: "Lean White Belt",
     DANGER: "Небезпечні відправлення, Книга 2",
-    Book1:"Книга технології 1",
+    Book1: "Книга технології 1",
     SORTING: "Сортування на терміналах та депо",
     BDF: "Завантаження та вивантаження БДФ",
     UNKNOWN: "Робота з невпізнаним вантажем",
     SCANNING: "Відомості сканування",
     MEDICAL: "Перша медична (MARCH)",
-};
+  };
 
   function buildEntries(db) {
     const entries = [];
@@ -185,15 +185,25 @@
         card.appendChild(q);
       }
 
-      const al = document.createElement("div");
-      al.className = "a-label";
-      al.textContent = e.q ? "Відповідь" : "Правильний варіант";
-      card.appendChild(al);
+      // Розбиваємо відповідь за символом "/" або переносом рядка
+      const answers = e.a.split(/\s*\/\s*|\n+/).filter(a => a.trim().length > 0);
 
-      const a = document.createElement("div");
-      a.className = "a";
-      a.innerHTML = highlight(e.a, qTokens);
-      card.appendChild(a);
+      answers.forEach((ansText, index) => {
+        const al = document.createElement("div");
+        al.className = "a-label";
+        if (answers.length > 1) {
+          al.textContent;
+          if (index > 0) al.style.marginTop = "12px"; // додаємо відступ між блоками
+        } else {
+          al.textContent = e.q ? "Відповідь" : "Правильний варіант";
+        }
+        card.appendChild(al);
+
+        const a = document.createElement("div");
+        a.className = "a";
+        a.innerHTML = highlight(ansText.trim(), qTokens);
+        card.appendChild(a);
+      });
 
       resultsEl.appendChild(card);
     });
