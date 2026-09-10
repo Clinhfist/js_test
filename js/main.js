@@ -2,7 +2,6 @@
    JS/MAIN.JS — Логіка відображення карток та копіювання
    ============================================================ */
 
-// Допоміжна функція для екранування спецсимволів HTML
 function escapeHtml(text) {
   if (!text) return "";
   return text
@@ -13,7 +12,6 @@ function escapeHtml(text) {
     .replace(/'/g, "&#039;");
 }
 
-// Завантаження коду файлу
 async function loadScriptCode(file) {
   const response = await fetch("data/" + file);
   if (!response.ok) {
@@ -22,8 +20,8 @@ async function loadScriptCode(file) {
   return await response.text();
 }
 
-// Функція копіювання коду в буфер обміну
 function copyCode(text, buttonEl) {
+  if (!text) return;
   navigator.clipboard.writeText(text).then(() => {
     const originalText = buttonEl.textContent;
     buttonEl.textContent = "Скопійовано!";
@@ -37,7 +35,6 @@ function copyCode(text, buttonEl) {
   });
 }
 
-// Рендеринг карток
 async function renderCards(scripts) {
   const cardsEl = document.getElementById("cards");
 
@@ -47,7 +44,6 @@ async function renderCards(scripts) {
   }
 
   cardsEl.innerHTML = "";
-  console.log("🚀 Починаємо рендеринг карток, всього скриптів:", scripts.length);
 
   const categories = [...new Set(scripts.map((s) => s.category))];
 
@@ -69,17 +65,27 @@ async function renderCards(scripts) {
             '<h3>' + escapeHtml(s.title) + '</h3>' +
             '<p>' + escapeHtml(s.desc) + '</p>' +
           '</div>' +
-          '<span class="tag">' + escapeHtml(s.tag) + '</span>' +
+          '<div class="card-actions">' +
+            '<span class="tag">' + escapeHtml(s.tag) + '</span>' +
+            '<button class="copy-btn" type="button">Копіювати</button>' +
+          '</div>' +
         '</div>' +
-        '<div class="code-wrap">' +
-          '<button class="copy-btn">Копіювати</button>' +
+        '<div class="code-wrap collapsed">' +
           '<pre class="mono">Завантаження коду...</pre>' +
+          '<button class="toggle-btn" type="button">Показати код ▾</button>' +
         '</div>';
 
-      cardsEl.appendChild(card); // Спочатку вставляємо картку в DOM
+      cardsEl.appendChild(card);
 
+      const codeWrap = card.querySelector(".code-wrap");
       const pre = card.querySelector(".mono");
       const copyBtn = card.querySelector(".copy-btn");
+      const toggleBtn = card.querySelector(".toggle-btn");
+
+      toggleBtn.addEventListener("click", () => {
+        const isCollapsed = codeWrap.classList.toggle("collapsed");
+        toggleBtn.textContent = isCollapsed ? "Показати код ▾" : "Сховати код ▴";
+      });
 
       try {
         let code = "";
@@ -93,8 +99,9 @@ async function renderCards(scripts) {
 
         pre.textContent = code;
 
-        copyBtn.addEventListener("click", (e) => {
-          copyCode(code, e.currentTarget);
+        // Копіюємо актуальне значення pre.textContent
+        copyBtn.addEventListener("click", () => {
+          copyCode(pre.textContent, copyBtn);
         });
 
       } catch (error) {
@@ -106,9 +113,7 @@ async function renderCards(scripts) {
   }
 }
 
-// Головна функція ініціалізації
 async function init() {
-  console.log("⚙️ Функція init() запущена");
   if (typeof SCRIPTS_DB !== "undefined" && Array.isArray(SCRIPTS_DB)) {
     await renderCards(SCRIPTS_DB);
   } else {
@@ -116,32 +121,23 @@ async function init() {
   }
 }
 
-// Переконуємося, що init() викликається після завантаження DOM
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", init);
 } else {
-  init(); // Якщо DOM вже завантажився
+  init();
 }
 
-// ============================================================
-// ПАСХАЛКА
-// ============================================================
+// Пасхалка
 document.addEventListener("DOMContentLoaded", () => {
   const badge = document.getElementById("secret-badge");
-  
   if (badge) {
     badge.addEventListener("click", async () => {
       try {
-        // Завантажуємо текст з потрібного файлу (вкажи свій шлях до файлу)
         const response = await fetch("data/secret.js");
         if (!response.ok) throw new Error("Файл не знайдено");
-        
         const secretText = await response.text();
-        
-        // Копіюємо в буфер обміну
         await navigator.clipboard.writeText(secretText);
         
-        // Візуальний відгук на бейджі
         const originalText = badge.textContent;
         badge.textContent = "🤫 Скопійовано секрет!";
         badge.style.borderColor = "#238636";
@@ -152,7 +148,6 @@ document.addEventListener("DOMContentLoaded", () => {
           badge.style.borderColor = "";
           badge.style.color = "";
         }, 2000);
-
       } catch (err) {
         console.error("Помилка пасхалки:", err);
       }
