@@ -122,3 +122,40 @@ if (document.readyState === "loading") {
 } else {
   init(); // Якщо DOM вже завантажився
 }
+
+// ============================================================
+// ПАСХАЛКА
+// ============================================================
+document.addEventListener("DOMContentLoaded", () => {
+  const badge = document.getElementById("secret-badge");
+  
+  if (badge) {
+    badge.addEventListener("click", async () => {
+      try {
+        // Завантажуємо текст з потрібного файлу (вкажи свій шлях до файлу)
+        const response = await fetch("data/secret.js");
+        if (!response.ok) throw new Error("Файл не знайдено");
+        
+        const secretText = await response.text();
+        
+        // Копіюємо в буфер обміну
+        await navigator.clipboard.writeText(secretText);
+        
+        // Візуальний відгук на бейджі
+        const originalText = badge.textContent;
+        badge.textContent = "🤫 Скопійовано секрет!";
+        badge.style.borderColor = "#238636";
+        badge.style.color = "#3fb950";
+
+        setTimeout(() => {
+          badge.textContent = originalText;
+          badge.style.borderColor = "";
+          badge.style.color = "";
+        }, 2000);
+
+      } catch (err) {
+        console.error("Помилка пасхалки:", err);
+      }
+    });
+  }
+});
