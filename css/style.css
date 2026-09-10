@@ -224,6 +224,11 @@ section {
   color: var(--muted); 
   font-size: 14px; 
 }
+.step b{
+    background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
 
 .step kbd {
   background: var(--card-2);
