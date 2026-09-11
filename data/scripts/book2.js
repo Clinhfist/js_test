@@ -50,7 +50,7 @@ const CLICK_DELAY_MS = 100;
 // НОРМАЛІЗАЦІЯ ТЕКСТУ
 // ============================================================
 function normalize(text) {
-    return String(text ? ? "")
+    return String(text ?? "")
         .toLowerCase()
         .normalize("NFKC")
         .replace(/[’‘ʼ`]/g, "'")
@@ -119,7 +119,7 @@ questionElements.forEach((questionElement, questionIndex) => {
     const card =
         questionElement.closest(".question-card") ||
         questionElement.closest('[class*="question"]') ||
-        questionElement.parentElement ? .parentElement ? .parentElement ? .parentElement;
+        questionElement.parentElement?.parentElement?.parentElement?.parentElement;
     if (!card) {
         console.warn(
             `⚠️ Не знайдено картку для питання №${questionIndex + 1}:`,
@@ -200,7 +200,7 @@ questionElements.forEach((questionElement, questionIndex) => {
     // ========================================================
     const input =
         answerElement.closest("label") ||
-        answerElement.parentElement ? .querySelector("input") ||
+        answerElement.parentElement?.querySelector("input") ||
         answerElement.querySelector("input");
     const clickTarget =
         input ||

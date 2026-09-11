@@ -46,7 +46,7 @@ document.querySelectorAll('[data-field="questionText"]').forEach(qEl => {
     if (!entry) return;
     // Нормалізуємо: приводимо відповідь(і) до масиву очищених рядків
     const rawAnswer = entry[1];
-    const correctAnswers = (Array.isArray(rawAnswer) ? rawAnswer : [rawAnswer]).map(cleanText);
+    const correctAnswers = (Array.isArray(rawAnswer)? rawAnswer : [rawAnswer]).map(cleanText);
     const card = qEl.closest('.question-card') || qEl.parentElement.parentElement.parentElement.parentElement;
     card.querySelectorAll('[data-field="optionText"]').forEach(opt => {
         if (correctAnswers.includes(cleanText(opt.textContent))) {

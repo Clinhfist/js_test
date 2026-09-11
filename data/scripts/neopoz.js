@@ -41,7 +41,7 @@ questions.forEach(qEl => {
     });
     if (!entry) return;
     const correctAnswer = cleanText(entry[1]);
-    const card = qEl.closest('.question-card') || qEl.parentElement ? .parentElement ? .parentElement ? .parentElement || qEl.parentNode;
+    const card = qEl.closest('.question-card') || qEl.parentElement?.parentElement?.parentElement?.parentElement || qEl.parentNode;
     if (card) {
         card.querySelectorAll('[data-field="optionText"], .text.resizeable-text').forEach(opt => {
             if (cleanText(opt.textContent) === correctAnswer) {
