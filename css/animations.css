@@ -1,0 +1,238 @@
+/* ============================================================
+   ANIMATIONS.CSS — лише рух. Кольори, розміри, шрифти й вміст
+   сторінок не змінюються. Підключається ПІСЛЯ style.css / poshuk.css.
+   Логіка появи при скролі — у js/animations.js
+   ============================================================ */
+
+:root {
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Плавний скрол до якоря («Перейти до скриптів ↓») */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Плавний перехід між сторінками (index ↔ poshuk), де браузер підтримує */
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 0.25s;
+}
+
+/* ============================================================
+   KEYFRAMES
+   (без "to" — кінцевий стан береться зі звичайних стилів)
+   ============================================================ */
+@keyframes riseIn {
+    from {
+        opacity: 0;
+        transform: translateY(22px);
+    }
+}
+
+@keyframes heroIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+}
+
+@keyframes dropIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes numPop {
+    from {
+        opacity: 0;
+        transform: scale(0.4);
+    }
+}
+
+@keyframes chipIn {
+    from {
+        opacity: 0;
+        transform: scale(0.88);
+    }
+}
+
+@keyframes cardIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+@keyframes markIn {
+    from {
+        background-color: rgba(56, 139, 253, 0);
+    }
+}
+
+@keyframes clearIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) scale(0.5);
+    }
+}
+
+@keyframes copiedPop {
+    0% {
+        transform: scale(1);
+    }
+    40% {
+        transform: scale(1.12);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ============================================================
+   INDEX.HTML — HERO (входить при завантаженні, без JS)
+   ============================================================ */
+.hero .container > * {
+    animation: heroIn 0.75s var(--ease-out) backwards;
+}
+
+.hero .container > :nth-child(1) { animation-delay: 0.05s; }
+.hero .container > :nth-child(2) { animation-delay: 0.15s; }
+.hero .container > :nth-child(3) { animation-delay: 0.25s; }
+.hero .container > :nth-child(4) { animation-delay: 0.35s; }
+.hero .container > :nth-child(5) { animation-delay: 0.42s; }
+
+/* ============================================================
+   INDEX.HTML — поява елементів при скролі
+   Сховані лише коли JS активний (клас .js на <html>),
+   тож без JS усе видно як завжди.
+   ============================================================ */
+.js :is(.section-title, .section-sub, .step, .warning, .cat-title, #cards .card, footer .container):not(.in) {
+    opacity: 0;
+}
+
+.js :is(.section-title, .section-sub, .step, .warning, .cat-title, #cards .card, footer .container).in {
+    animation: riseIn 0.65s var(--ease-out) var(--d, 0ms) backwards;
+}
+
+/* Цифри кроків «вискакують» разом із кроком */
+.js .step.in .step-num {
+    animation: numPop 0.5s var(--ease-spring) calc(var(--d, 0ms) + 180ms) backwards;
+}
+
+/* ============================================================
+   INDEX.HTML — розгортання/згортання коду (замість різкого display:none)
+   Кінцеві стани ідентичні оригінальним.
+   ============================================================ */
+.code-wrap pre {
+    transition:
+        max-height 0.45s var(--ease-out),
+        padding 0.45s var(--ease-out),
+        border-top-width 0.45s var(--ease-out),
+        opacity 0.3s ease 0.05s,
+        visibility 0s linear 0s;
+}
+
+.code-wrap.collapsed pre {
+    display: block !important;
+    max-height: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    border-top-width: 0 !important;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    transition:
+        max-height 0.35s var(--ease-out),
+        padding 0.35s var(--ease-out),
+        border-top-width 0.35s var(--ease-out),
+        opacity 0.2s ease,
+        visibility 0s linear 0.35s;
+}
+
+/* Мікро-відгуки на натискання */
+.copy-btn:active {
+    transform: scale(0.94);
+}
+
+.copy-btn.copied {
+    animation: copiedPop 0.4s var(--ease-out);
+}
+
+/* ============================================================
+   POSHUK.HTML — мобільний пошук
+   ============================================================ */
+
+/* Шапка входить при завантаженні */
+.topbar .row,
+.topbar h1,
+.topbar .search-box {
+    animation: dropIn 0.55s var(--ease-out) backwards;
+}
+
+.topbar .row { animation-delay: 0.02s; }
+.topbar h1 { animation-delay: 0.08s; }
+.topbar .search-box { animation-delay: 0.14s; }
+
+/* Чипи категорій з'являються по черзі */
+.chip {
+    animation: chipIn 0.45s var(--ease-out) backwards;
+}
+
+.chip:nth-child(1) { animation-delay: 0.20s; }
+.chip:nth-child(2) { animation-delay: 0.24s; }
+.chip:nth-child(3) { animation-delay: 0.28s; }
+.chip:nth-child(4) { animation-delay: 0.32s; }
+.chip:nth-child(5) { animation-delay: 0.36s; }
+.chip:nth-child(6) { animation-delay: 0.40s; }
+.chip:nth-child(7) { animation-delay: 0.44s; }
+.chip:nth-child(8) { animation-delay: 0.48s; }
+.chip:nth-child(9) { animation-delay: 0.52s; }
+
+.chip:active {
+    transform: scale(0.95);
+}
+
+/* Картки результатів: клас .enter додає js/animations.js,
+   лише коли набір результатів реально змінився
+   (щоб не мигало на кожну літеру) */
+.results .enter {
+    animation: cardIn 0.35s var(--ease-out) calc(var(--i, 0) * 45ms) backwards;
+}
+
+/* Підсвітка знайдених слів плавно «загоряється» */
+mark {
+    animation: markIn 0.5s ease 0.15s backwards;
+}
+
+/* Кнопка очищення з'являється з м'яким «поп» */
+.clear-btn.show {
+    animation: clearIn 0.2s var(--ease-out);
+}
+
+/* ============================================================
+   ПОВАГА ДО НАЛАШТУВАНЬ: «зменшити рух» у системі
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0s !important;
+    }
+
+    .js :is(.section-title, .section-sub, .step, .warning, .cat-title, #cards .card, footer .container):not(.in) {
+        opacity: 1;
+    }
+}
