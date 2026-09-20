@@ -151,6 +151,7 @@
         if (!results) return;
 
         var lastSignature = null;
+        var STAGGER_MAX = 10; // після 10-ї картки затримка більше не росте
 
         function animate() {
             var children = Array.prototype.slice.call(results.children);
@@ -163,12 +164,25 @@
             lastSignature = signature;
 
             children.forEach(function (child, i) {
-                child.style.setProperty("--i", Math.min(i, 8));
+                child.style.setProperty("--i", Math.min(i, STAGGER_MAX));
                 child.classList.add("enter");
             });
         }
 
         new MutationObserver(animate).observe(results, { childList: true });
+
+        // Вибір категорії завжди програє каскад заново, навіть якщо набір
+        // карток збігся (capture-фаза: спрацьовує ДО обробника чипа в search.js)
+        var chips = document.getElementById("chips");
+        if (chips) {
+            chips.addEventListener(
+                "click",
+                function (e) {
+                    if (e.target.closest(".chip")) lastSignature = null;
+                },
+                true
+            );
+        }
 
         // Початковий список search.js вже відрендерив до нашого запуску
         animate();
