@@ -6,6 +6,54 @@
 (function () {
     "use strict";
 
+    function ready(fn) {
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", fn);
+        } else {
+            fn();
+        }
+    }
+
+    /* ---------- Вібро-відгук на телефоні (не є «рухом» на екрані,
+       тому працює й при «зменшити рух») ---------- */
+    function buzz(pattern) {
+        try {
+            if (navigator.vibrate) navigator.vibrate(pattern);
+        } catch (e) { /* не підтримується — ігноруємо */ }
+    }
+
+    function initHaptics() {
+        // Вібруємо, коли main.js успішно скопіював код (кнопка отримує клас .copied)
+        new MutationObserver(function (mutations) {
+            mutations.forEach(function (m) {
+                var t = m.target;
+                if (
+                    t.classList &&
+                    t.classList.contains("copy-btn") &&
+                    t.classList.contains("copied") &&
+                    (m.oldValue || "").indexOf("copied") === -1
+                ) {
+                    buzz(25);
+                }
+            });
+        }).observe(document.body, {
+            subtree: true,
+            attributes: true,
+            attributeFilter: ["class"],
+            attributeOldValue: true
+        });
+
+        // Пасхалка на бейджі — подвійний короткий «бзз»
+        var badge = document.getElementById("secret-badge");
+        if (badge) {
+            badge.addEventListener("click", function () {
+                buzz([20, 50, 20]);
+            });
+        }
+    }
+
+    ready(initHaptics);
+
     // Поважаємо системне «зменшити рух»: нічого не ховаємо і не анімуємо
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         return;
@@ -16,14 +64,6 @@
     // Елементи, що з'являються при скролі (мають збігатися з animations.css)
     var REVEAL_SELECTOR =
         ".section-title, .section-sub, .step, .warning, .cat-title, #cards .card, footer .container";
-
-    function ready(fn) {
-        if (document.readyState === "loading") {
-            document.addEventListener("DOMContentLoaded", fn);
-        } else {
-            fn();
-        }
-    }
 
     /* ---------- Поява при скролі (index.html) ---------- */
     function initReveal() {
@@ -134,8 +174,26 @@
         animate();
     }
 
+    /* ---------- Глітч на бейджі-пасхалці ---------- */
+    function initGlitch() {
+        var badge = document.getElementById("secret-badge");
+        if (!badge) return;
+
+        badge.addEventListener("click", function () {
+            // перезапуск анімації при повторних кліках
+            badge.classList.remove("glitch");
+            void badge.offsetWidth;
+            badge.classList.add("glitch");
+        });
+
+        badge.addEventListener("animationend", function () {
+            badge.classList.remove("glitch");
+        });
+    }
+
     ready(function () {
         initReveal();
         initResults();
+        initGlitch();
     });
 })();

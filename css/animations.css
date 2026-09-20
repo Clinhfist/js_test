@@ -217,6 +217,51 @@ mark {
 }
 
 /* ============================================================
+   ГЛІТЧ бейджа-пасхалки (клас .glitch додає js/animations.js)
+   ============================================================ */
+@keyframes glitch {
+    0%   { transform: translate(0); text-shadow: none; clip-path: none; }
+    8%   { transform: translate(-3px, 1px) skewX(-10deg); text-shadow: 3px 0 #ff3860, -3px 0 #00e5ff; clip-path: inset(0 0 55% 0); border-color: #ff3860; }
+    16%  { transform: translate(3px, -1px) skewX(8deg); text-shadow: -3px 0 #ff3860, 3px 0 #00e5ff; clip-path: inset(45% 0 0 0); border-color: #00e5ff; }
+    24%  { transform: translate(-2px, 0); text-shadow: 2px 0 #00e5ff, -2px 0 #ff3860; clip-path: inset(20% 0 40% 0); }
+    32%  { transform: translate(2px, 1px) skewX(-6deg); text-shadow: -2px 0 #ff3860, 2px 0 #00e5ff; clip-path: none; border-color: #ff3860; }
+    40%  { transform: translate(0); text-shadow: none; clip-path: none; }
+    52%  { transform: translate(4px, -1px) skewX(12deg); text-shadow: 4px 0 #00e5ff, -4px 0 #ff3860; clip-path: inset(60% 0 0 0); border-color: #00e5ff; }
+    60%  { transform: translate(-4px, 1px) skewX(-12deg); text-shadow: -4px 0 #ff3860, 4px 0 #00e5ff; clip-path: inset(0 0 65% 0); }
+    70%  { transform: translate(1px, 0); text-shadow: 2px 0 #ff3860, -2px 0 #00e5ff; clip-path: none; }
+    82%  { transform: translate(-1px, 0) skewX(4deg); text-shadow: -1px 0 #00e5ff, 1px 0 #ff3860; }
+    100% { transform: translate(0); text-shadow: none; clip-path: none; }
+}
+
+#secret-badge.glitch {
+    animation: glitch 0.65s steps(1, end);
+}
+
+/* ============================================================
+   БЛИСК, що раз на кілька секунд пробігає по «JS Tools»
+   У спокої колір той самий #58a6ff — змінюється лише під час проходу.
+   ============================================================ */
+@keyframes shine {
+    0%   { background-position: 100% 0; }
+    16%  { background-position: 0% 0; }
+    100% { background-position: 0% 0; }
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .hero h1 .accent {
+        background-image: linear-gradient(100deg, #58a6ff 0%, #58a6ff 43%, #a9d1ff 50%, #58a6ff 57%, #58a6ff 100%);
+        background-size: 250% 100%;
+        background-repeat: no-repeat;
+        background-position: 100% 0;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        animation: shine 6s ease-in-out 1.8s infinite;
+    }
+}
+
+/* ============================================================
    ПОВАГА ДО НАЛАШТУВАНЬ: «зменшити рух» у системі
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
