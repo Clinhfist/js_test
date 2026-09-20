@@ -215,9 +215,147 @@
         });
     }
 
+    /* ---------- Підсвітка за курсором (лише пристрої з мишею) ---------- */
+    function initSpotlight() {
+        if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+            return;
+        }
+
+        var root = document.documentElement;
+        var x = 0;
+        var y = 0;
+        var raf = 0;
+
+        function apply() {
+            raf = 0;
+            root.style.setProperty("--mx", x + "px");
+            root.style.setProperty("--my", y + "px");
+        }
+
+        window.addEventListener(
+            "pointermove",
+            function (e) {
+                if (e.pointerType === "touch") return;
+                x = e.clientX;
+                y = e.clientY;
+                root.style.setProperty("--spot", "1");
+                if (!raf) raf = requestAnimationFrame(apply);
+            },
+            { passive: true }
+        );
+
+        // Курсор покинув вікно — плавно гасимо підсвітку
+        document.documentElement.addEventListener("mouseleave", function () {
+            root.style.setProperty("--spot", "0");
+        });
+    }
+
+    /* ---------- Ефект друку при розгортанні коду ---------- */
+    function initTyping() {
+        if (typeof Highlight === "undefined" || !window.CSS || !CSS.highlights) return;
+
+        var untyped = new Highlight();
+        var caret = new Highlight();
+        caret.priority = 1; // каретка перекриває «прозорий» стиль
+        CSS.highlights.set("code-untyped", untyped);
+        CSS.highlights.set("code-caret", caret);
+
+        var VISIBLE_HEIGHT = 320; // max-height блоку pre у style.css
+        var current = null;
+
+        function stop() {
+            if (!current) return;
+            cancelAnimationFrame(current.raf);
+            untyped.clear();
+            caret.clear();
+            current = null;
+        }
+
+        function type(pre) {
+            stop();
+
+            var node = pre.firstChild;
+            if (!node || node.nodeType !== 3) return;
+
+            var text = node.data;
+            var len = text.length;
+            if (!len) return;
+
+            // «Друкуємо» лише те, що влізає у видиму частину блоку;
+            // решта (нижче прокрутки) відкривається одразу після цього.
+            var cs = getComputedStyle(pre);
+            var lh = parseFloat(cs.lineHeight);
+            if (!lh || isNaN(lh)) lh = parseFloat(cs.fontSize) * 1.5;
+            var lines = Math.ceil(VISIBLE_HEIGHT / lh) + 1;
+
+            var limit = len;
+            var idx = -1;
+            for (var n = 0; n < lines; n++) {
+                idx = text.indexOf("\n", idx + 1);
+                if (idx === -1) { limit = len; break; }
+                limit = idx;
+            }
+
+            var duration = Math.min(1600, Math.max(500, limit * 1.2));
+            var startTime = performance.now();
+            var pos = 0;
+            var rest = document.createRange();
+            var cur = document.createRange();
+
+            current = { pre: pre, raf: 0 };
+
+            function frame(now) {
+                var t = Math.min(1, (now - startTime) / duration);
+                var target = Math.floor(limit * t);
+                if (target > pos) pos = target;
+
+                // пробіли та переноси «друкуються» миттєво
+                while (pos < limit && /\s/.test(text.charAt(pos))) pos++;
+
+                if (pos >= limit || t >= 1) {
+                    stop(); // відкриваємо решту тексту
+                    return;
+                }
+
+                rest.setStart(node, pos);
+                rest.setEnd(node, len);
+                untyped.clear();
+                untyped.add(rest);
+
+                cur.setStart(node, pos);
+                cur.setEnd(node, pos + 1);
+                caret.clear();
+                caret.add(cur);
+
+                current.raf = requestAnimationFrame(frame);
+            }
+
+            // перший кадр одразу, щоб не було миготіння повного тексту
+            frame(startTime);
+        }
+
+        // Спрацьовує ПІСЛЯ обробника кнопки в main.js, тож клас .collapsed вже оновлено
+        document.addEventListener("click", function (e) {
+            var btn = e.target.closest(".toggle-btn");
+            if (!btn) return;
+
+            var wrap = btn.closest(".code-wrap");
+            var pre = wrap && wrap.querySelector("pre");
+            if (!pre) return;
+
+            if (wrap.classList.contains("collapsed")) {
+                if (current && current.pre === pre) stop(); // згорнули посеред друку
+            } else {
+                type(pre);
+            }
+        });
+    }
+
     ready(function () {
         initReveal();
         initResults();
         initGlitch();
+        initSpotlight();
+        initTyping();
     });
 })();
