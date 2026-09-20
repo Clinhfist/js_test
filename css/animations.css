@@ -203,7 +203,7 @@ html {
    лише коли набір результатів реально змінився
    (щоб не мигало на кожну літеру) */
 .results .enter {
-    animation: cardIn 0.35s var(--ease-out) calc(var(--i, 0) * 45ms) backwards;
+    animation: cardIn 0.4s var(--ease-out) calc(var(--i, 0) * 0.05s) backwards;
 }
 
 /* Підсвітка знайдених слів плавно «загоряється» */
