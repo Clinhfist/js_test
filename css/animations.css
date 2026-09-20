@@ -290,6 +290,75 @@ html.glitch-page-on {
 }
 
 /* ============================================================
+   ФОН: точкова сітка + підсвітка, що йде за курсором
+   Три фіксовані шари під усім вмістом (z-index: -1):
+     html::before  — м'яке світіння навколо курсора
+     body::before  — тонка статична сітка з крапок
+     body::after   — яскравіші крапки, видимі лише поблизу курсора
+   Позицію курсора (--mx, --my) виставляє js/animations.js.
+   ============================================================ */
+:root {
+    --mx: -9999px;
+    --my: -9999px;
+    --spot: 0;
+    --dot-size: 26px;
+    --dot-color: rgba(139, 148, 158, 0.2);
+    --spot-color: 88, 166, 255; /* акцентний синій #58a6ff */
+}
+
+html::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(
+        circle 420px at var(--mx) var(--my),
+        rgba(var(--spot-color), 0.1),
+        transparent 70%
+    );
+    opacity: var(--spot);
+    transition: opacity 0.4s ease;
+}
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-size: var(--dot-size) var(--dot-size);
+}
+
+body::before {
+    background-image: radial-gradient(var(--dot-color) 0 1px, transparent 1.5px);
+}
+
+body::after {
+    background-image: radial-gradient(rgba(var(--spot-color), 0.85) 0 1.2px, transparent 1.7px);
+    -webkit-mask-image: radial-gradient(circle 200px at var(--mx) var(--my), #000 0%, transparent 100%);
+    mask-image: radial-gradient(circle 200px at var(--mx) var(--my), #000 0%, transparent 100%);
+    opacity: var(--spot);
+    transition: opacity 0.4s ease;
+}
+
+/* ============================================================
+   ДРУК КОДУ при розгортанні (CSS Custom Highlight API)
+   Ще не «надруковані» символи — прозорі, а сам текст у DOM
+   не змінюється (кнопка «Копіювати» завжди бере повний код).
+   Каретка — блок на наступному символі.
+   ============================================================ */
+::highlight(code-untyped) {
+    color: transparent;
+}
+
+::highlight(code-caret) {
+    background-color: #58a6ff;
+    color: #0d1117;
+}
+
+/* ============================================================
    ПОВАГА ДО НАЛАШТУВАНЬ: «зменшити рух» у системі
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
