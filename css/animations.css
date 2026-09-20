@@ -238,6 +238,34 @@ mark {
 }
 
 /* ============================================================
+   ГЛІТЧ НА ВСЮ СТОРІНКУ (клас .glitch-page на <body>)
+   text-shadow успадковується, тому «розщеплення» кольорів
+   отримує весь текст сторінки.
+   ============================================================ */
+@keyframes glitchPage {
+    0%   { transform: translate(0); text-shadow: none; filter: none; }
+    8%   { transform: translate(-6px, 1px) skewX(-2deg); text-shadow: 3px 0 #ff3860, -3px 0 #00e5ff; filter: hue-rotate(25deg) saturate(1.5); }
+    16%  { transform: translate(6px, -1px) skewX(1.5deg); text-shadow: -3px 0 #ff3860, 3px 0 #00e5ff; filter: hue-rotate(-25deg) saturate(1.5); }
+    24%  { transform: translate(-3px, 0); text-shadow: 2px 0 #00e5ff, -2px 0 #ff3860; filter: none; }
+    32%  { transform: translate(4px, 1px) skewX(-1.5deg); text-shadow: -2px 0 #ff3860, 2px 0 #00e5ff; filter: invert(0.08) hue-rotate(40deg); }
+    40%  { transform: translate(0); text-shadow: none; filter: none; }
+    52%  { transform: translate(8px, -1px) skewX(2.5deg); text-shadow: 4px 0 #00e5ff, -4px 0 #ff3860; filter: hue-rotate(-40deg) saturate(1.8); }
+    60%  { transform: translate(-8px, 1px) skewX(-2.5deg); text-shadow: -4px 0 #ff3860, 4px 0 #00e5ff; filter: hue-rotate(30deg); }
+    70%  { transform: translate(2px, 0); text-shadow: 2px 0 #ff3860, -2px 0 #00e5ff; filter: none; }
+    82%  { transform: translate(-1px, 0) skewX(0.5deg); text-shadow: -1px 0 #00e5ff, 1px 0 #ff3860; }
+    100% { transform: translate(0); text-shadow: none; filter: none; }
+}
+
+body.glitch-page {
+    animation: glitchPage 0.65s steps(1, end);
+}
+
+/* Щоб зсув не викликав короткий горизонтальний скролбар */
+html.glitch-page-on {
+    overflow-x: hidden;
+}
+
+/* ============================================================
    БЛИСК, що раз на кілька секунд пробігає по «JS Tools»
    У спокої колір той самий #58a6ff — змінюється лише під час проходу.
    ============================================================ */

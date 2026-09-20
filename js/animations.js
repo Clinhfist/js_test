@@ -179,15 +179,25 @@
         var badge = document.getElementById("secret-badge");
         if (!badge) return;
 
+        var body = document.body;
+        var html = document.documentElement;
+
         badge.addEventListener("click", function () {
+            // Центр нахилу — середина видимого екрана, а не всієї (довгої) сторінки
+            body.style.transformOrigin = "50% " + (window.scrollY + window.innerHeight / 2) + "px";
+            html.classList.add("glitch-page-on");
+
             // перезапуск анімації при повторних кліках
-            badge.classList.remove("glitch");
-            void badge.offsetWidth;
-            badge.classList.add("glitch");
+            body.classList.remove("glitch-page");
+            void body.offsetWidth;
+            body.classList.add("glitch-page");
         });
 
-        badge.addEventListener("animationend", function () {
-            badge.classList.remove("glitch");
+        body.addEventListener("animationend", function (e) {
+            if (e.target !== body) return; // ігноруємо анімації дочірніх елементів
+            body.classList.remove("glitch-page");
+            html.classList.remove("glitch-page-on");
+            body.style.transformOrigin = "";
         });
     }
 
