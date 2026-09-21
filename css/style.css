@@ -368,7 +368,7 @@ section {
 }
 
 pre {
-    background: #0d1117 !important;
+    background: rgba(22, 27, 34, 0.6) !important;
     border: none !important;
     border-top: 1px solid var(--border) !important;
     outline: none !important;
