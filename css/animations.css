@@ -56,17 +56,10 @@ html {
     }
 }
 
-@keyframes chipIn {
+@keyframes sheetRow {
     from {
         opacity: 0;
-        transform: scale(0.88);
-    }
-}
-
-@keyframes cardIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(8px);
     }
 }
 
@@ -169,41 +162,48 @@ html {
    POSHUK.HTML — мобільний пошук
    ============================================================ */
 
-/* Шапка входить при завантаженні */
-.topbar .row,
-.topbar h1,
-.topbar .search-box {
+/* Шапка (один рядок) входить при завантаженні */
+.topbar .bar > * {
     animation: dropIn 0.55s var(--ease-out) backwards;
 }
 
-.topbar .row { animation-delay: 0.02s; }
-.topbar h1 { animation-delay: 0.08s; }
-.topbar .search-box { animation-delay: 0.14s; }
+.topbar .bar > :nth-child(1) { animation-delay: 0.02s; }
+.topbar .bar > :nth-child(2) { animation-delay: 0.08s; }
+.topbar .bar > :nth-child(3) { animation-delay: 0.14s; }
 
-/* Чипи категорій з'являються по черзі */
-.chip {
-    animation: chipIn 0.45s var(--ease-out) backwards;
+/* Рядки списку тем з'являються каскадом щоразу, коли панель відкривається */
+.sheet.open .chip {
+    animation: sheetRow 0.4s var(--ease-out) backwards;
 }
 
-.chip:nth-child(1) { animation-delay: 0.20s; }
-.chip:nth-child(2) { animation-delay: 0.24s; }
-.chip:nth-child(3) { animation-delay: 0.28s; }
-.chip:nth-child(4) { animation-delay: 0.32s; }
-.chip:nth-child(5) { animation-delay: 0.36s; }
-.chip:nth-child(6) { animation-delay: 0.40s; }
-.chip:nth-child(7) { animation-delay: 0.44s; }
-.chip:nth-child(8) { animation-delay: 0.48s; }
-.chip:nth-child(9) { animation-delay: 0.52s; }
+.sheet.open .chip:nth-child(1) { animation-delay: 0.10s; }
+.sheet.open .chip:nth-child(2) { animation-delay: 0.14s; }
+.sheet.open .chip:nth-child(3) { animation-delay: 0.18s; }
+.sheet.open .chip:nth-child(4) { animation-delay: 0.22s; }
+.sheet.open .chip:nth-child(5) { animation-delay: 0.26s; }
+.sheet.open .chip:nth-child(6) { animation-delay: 0.30s; }
+.sheet.open .chip:nth-child(7) { animation-delay: 0.34s; }
+.sheet.open .chip:nth-child(8) { animation-delay: 0.38s; }
+.sheet.open .chip:nth-child(9) { animation-delay: 0.42s; }
 
-.chip:active {
-    transform: scale(0.95);
+.chip:active,
+.topics-btn:active {
+    transform: scale(0.97);
 }
 
-/* Картки результатів: клас .enter додає js/animations.js,
-   лише коли набір результатів реально змінився
-   (щоб не мигало на кожну літеру) */
-.results .enter {
-    animation: cardIn 0.4s var(--ease-out) calc(var(--i, 0) * 0.05s) backwards;
+/* Картки результатів з'являються при скролі (клас .in ставить js/animations.js).
+   Приховані лише коли JS активний. .instant — без анімації, коли набір
+   результатів не змінився (щоб не мигало на кожну літеру). */
+.js #results > :not(.in) {
+    opacity: 0;
+}
+
+.js #results > .in {
+    animation: riseIn 0.55s var(--ease-out) var(--d, 0ms) backwards;
+}
+
+.js #results > .in.instant {
+    animation: none;
 }
 
 /* Підсвітка знайдених слів плавно «загоряється» */
@@ -290,57 +290,24 @@ html.glitch-page-on {
 }
 
 /* ============================================================
-   ФОН: точкова сітка + підсвітка, що йде за курсором
-   Три фіксовані шари під усім вмістом (z-index: -1):
-     html::before  — м'яке світіння навколо курсора
-     body::before  — тонка статична сітка з крапок
-     body::after   — яскравіші крапки, видимі лише поблизу курсора
-   Позицію курсора (--mx, --my) виставляє js/animations.js.
+   ФОН: випадкові крапки + неонові лінії до курсора
+   Малює js/animations.js (функція initNeonField) на <canvas id="neon-bg">.
+   Canvas лежить під усім вмістом і не перехоплює кліки.
    ============================================================ */
-:root {
-    --mx: -9999px;
-    --my: -9999px;
-    --spot: 0;
-    --dot-size: 26px;
-    --dot-color: rgba(139, 148, 158, 0.2);
-    --spot-color: 88, 166, 255; /* акцентний синій #58a6ff */
-}
-
-html::before {
-    content: "";
+#neon-bg {
     position: fixed;
     inset: 0;
+    width: 100%;
+    height: 100%;
     z-index: -1;
     pointer-events: none;
-    background: radial-gradient(
-        circle 420px at var(--mx) var(--my),
-        rgba(var(--spot-color), 0.1),
-        transparent 70%
-    );
-    opacity: var(--spot);
-    transition: opacity 0.4s ease;
+    display: block;
 }
 
-body::before,
-body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background-size: var(--dot-size) var(--dot-size);
-}
-
-body::before {
-    background-image: radial-gradient(var(--dot-color) 0 1px, transparent 1.5px);
-}
-
-body::after {
-    background-image: radial-gradient(rgba(var(--spot-color), 0.85) 0 1.2px, transparent 1.7px);
-    -webkit-mask-image: radial-gradient(circle 200px at var(--mx) var(--my), #000 0%, transparent 100%);
-    mask-image: radial-gradient(circle 200px at var(--mx) var(--my), #000 0%, transparent 100%);
-    opacity: var(--spot);
-    transition: opacity 0.4s ease;
+@media print {
+    #neon-bg {
+        display: none;
+    }
 }
 
 /* ============================================================

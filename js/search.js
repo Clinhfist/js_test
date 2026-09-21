@@ -11,6 +11,15 @@
     const metaEl = document.getElementById("meta");
     const chipsEl = document.getElementById("chips");
 
+    // Вибір теми (нижня панель) та мітка обраної теми
+    const topicsBtn = document.getElementById("topics-btn");
+    const sheetEl = document.getElementById("sheet");
+    const backdropEl = document.getElementById("sheet-backdrop");
+    const sheetCloseEl = document.getElementById("sheet-close");
+    const filterRowEl = document.getElementById("filter-row");
+    const filterNameEl = document.getElementById("filter-name");
+    const filterPillEl = document.getElementById("filter-pill");
+
     let activeCat = "Всі";
     let ENTRIES = [];
 
@@ -209,20 +218,123 @@
         });
     }
 
+    /* ---------- Тема (категорія) ---------- */
+    function setCategory(cat) {
+        activeCat = cat;
+        [...chipsEl.children].forEach((c) => c.classList.toggle("active", c.dataset.cat === cat));
+
+        const filtered = cat !== "Всі";
+        filterRowEl.classList.toggle("show", filtered);
+        if (filtered) filterNameEl.textContent = cat;
+        topicsBtn.classList.toggle("has-filter", filtered);
+
+        render(searchEl.value);
+    }
+
     function buildChips() {
         const catList = ["Всі", ...Array.from(new Set(ENTRIES.map((e) => e.cat)))];
         catList.forEach((cat) => {
+            const count = cat === "Всі" ? ENTRIES.length : ENTRIES.filter((e) => e.cat === cat).length;
+
             const b = document.createElement("button");
+            b.type = "button";
             b.className = "chip" + (cat === "Всі" ? " active" : "");
-            b.textContent = cat === "Всі" ? "Всі категорії" : cat;
+            b.dataset.cat = cat;
+
+            const name = document.createElement("span");
+            name.className = "chip-name";
+            name.textContent = cat === "Всі" ? "Всі теми" : cat;
+
+            const num = document.createElement("span");
+            num.className = "chip-count";
+            num.textContent = count;
+
+            b.appendChild(name);
+            b.appendChild(num);
             b.addEventListener("click", () => {
-                activeCat = cat;
-                [...chipsEl.children].forEach((c) => c.classList.remove("active"));
-                b.classList.add("active");
-                render(searchEl.value);
+                setCategory(cat);
+                closeSheet();
             });
             chipsEl.appendChild(b);
         });
+    }
+
+    /* ---------- Нижня панель вибору теми ---------- */
+    let lastFocus = null;
+
+    function openSheet() {
+        lastFocus = document.activeElement;
+        sheetEl.classList.add("open");
+        backdropEl.classList.add("open");
+        document.documentElement.classList.add("sheet-open");
+        topicsBtn.setAttribute("aria-expanded", "true");
+        const target = chipsEl.querySelector(".chip.active") || sheetCloseEl;
+        target.focus({ preventScroll: true });
+        target.scrollIntoView({ block: "nearest" });
+    }
+
+    function closeSheet() {
+        if (!sheetEl.classList.contains("open")) return;
+        sheetEl.classList.remove("open");
+        backdropEl.classList.remove("open");
+        document.documentElement.classList.remove("sheet-open");
+        topicsBtn.setAttribute("aria-expanded", "false");
+        if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+    }
+
+    function initSheet() {
+        topicsBtn.addEventListener("click", openSheet);
+        sheetCloseEl.addEventListener("click", closeSheet);
+        backdropEl.addEventListener("click", closeSheet);
+        filterPillEl.addEventListener("click", () => setCategory("Всі"));
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") closeSheet();
+        });
+
+        // Tab не «тікає» з відкритої панелі
+        sheetEl.addEventListener("keydown", (e) => {
+            if (e.key !== "Tab") return;
+            const f = [...sheetEl.querySelectorAll("button")];
+            const first = f[0];
+            const last = f[f.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        });
+
+        // Свайп вниз по ручці/заголовку закриває панель (лише на телефоні)
+        const drag = sheetEl.querySelector(".sheet-drag");
+        const mobile = window.matchMedia("(max-width: 640px)");
+        let startY = null;
+        let dy = 0;
+
+        drag.addEventListener("pointerdown", (e) => {
+            if (!mobile.matches || e.target.closest("button")) return;
+            startY = e.clientY;
+            dy = 0;
+            drag.setPointerCapture(e.pointerId);
+            sheetEl.style.transition = "none";
+        });
+        drag.addEventListener("pointermove", (e) => {
+            if (startY === null) return;
+            dy = Math.max(0, e.clientY - startY);
+            sheetEl.style.transform = "translateY(" + dy + "px)";
+        });
+        const endDrag = () => {
+            if (startY === null) return;
+            startY = null;
+            sheetEl.style.transition = "";
+            sheetEl.style.transform = "";
+            if (dy > 80) closeSheet();
+            dy = 0;
+        };
+        drag.addEventListener("pointerup", endDrag);
+        drag.addEventListener("pointercancel", endDrag);
     }
 
     function init() {
@@ -238,6 +350,7 @@
             e._qt = tokens(e.q);
         });
         buildChips();
+        initSheet();
 
         let t;
         searchEl.addEventListener("input", () => {

@@ -95,9 +95,9 @@ input[type="search"]::-ms-reveal {
     position: sticky;
     top: 0;
     z-index: 20;
-    background: rgba(13, 17, 23, 0.92);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(13, 17, 23, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
     padding-top: env(safe-area-inset-top);
 }
@@ -105,49 +105,80 @@ input[type="search"]::-ms-reveal {
 .topbar-inner {
     max-width: 640px;
     margin: 0 auto;
-    padding: 12px 16px;
+    padding: 8px 12px;
 }
 
-.row {
+/* Один компактний рядок: [←] [пошук] [Теми] */
+.bar {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
-.back {
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.icon-btn {
+    flex: 0 0 auto;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    color: #58a6ff;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
     text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 6px 0;
-    transition: color 0.15s ease;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
 
-.back:hover,
-.back:active {
-    color: #79c0ff;
-}
-
-h1 {
-    font-size: 18px;
-    margin: 4px 0 12px;
-    font-weight: 700;
+.icon-btn:hover,
+.icon-btn:active {
     color: var(--text-bright);
+    border-color: #8b949e;
+}
+
+.icon-btn.small {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
 }
 
 .search-box {
     position: relative;
+    flex: 1;
+    min-width: 0;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
 }
 
 .search-input {
     width: 100%;
+    height: 40px;
     font-size: 16px;
     /* >=16px запобігає зуму на iOS */
-    padding: 12px 40px 12px 14px;
-    border-radius: 8px;
+    padding: 0 38px 0 38px;
+    border-radius: 10px;
     border: 1px solid var(--border);
     background: var(--card);
     color: var(--text-bright);
@@ -162,6 +193,104 @@ h1 {
 .search-input:focus {
     border-color: #58a6ff;
     box-shadow: 0 0 0 3px rgba(56, 139, 253, 0.18);
+}
+
+.topics-btn {
+    position: relative;
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text-bright);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.topics-btn:hover {
+    border-color: #8b949e;
+}
+
+/* Коли обрана тема — кнопка підсвічується і має крапку-індикатор */
+.topics-btn.has-filter {
+    background: rgba(56, 139, 253, 0.12);
+    border-color: rgba(56, 139, 253, 0.5);
+    color: #58a6ff;
+}
+
+.topics-btn.has-filter::after {
+    content: "";
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #58a6ff;
+    border: 2px solid var(--bg);
+}
+
+/* Мітка обраної теми під пошуком (з'являється лише коли тема обрана) */
+.filter-row {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition: grid-template-rows 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.filter-row.show {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition-delay: 0s;
+}
+
+.filter-inner {
+    min-height: 0;
+    overflow: hidden;
+}
+
+.filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 100%;
+    margin-top: 8px;
+    padding: 5px 10px 5px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(56, 139, 253, 0.4);
+    background: rgba(56, 139, 253, 0.15);
+    color: #58a6ff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.filter-pill:hover {
+    background: rgba(56, 139, 253, 0.25);
+}
+
+.filter-label {
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.filter-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.filter-x {
+    font-size: 16px;
+    line-height: 1;
 }
 
 .clear-btn {
@@ -200,44 +329,182 @@ h1 {
 }
 
 /* ============================================================
-   ЧИПИ КАТЕГОРІЙ
+   ВИБІР ТЕМИ — нижня панель (телефон) / вікно по центру (ПК)
    ============================================================ */
-.chips {
+html.sheet-open,
+html.sheet-open body {
+    overflow: hidden;
+}
+
+.sheet-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(1, 4, 9, 0.6);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.sheet-backdrop.open {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+}
+
+.sheet {
+    position: fixed;
+    z-index: 50;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding: 8px 0 2px;
-    margin: 0 -2px;
-    scrollbar-width: none;
-}
-
-.chips::-webkit-scrollbar {
-    display: none;
-}
-
-.chip {
-    flex: 0 0 auto;
-    font-size: 12.5px;
-    font-weight: 600;
-    padding: 6px 12px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
+    flex-direction: column;
+    max-height: 82vh;
+    max-height: 82dvh;
     background: var(--card);
-    color: var(--muted);
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.15s ease;
+    border-top: 1px solid var(--border);
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5);
+    padding-bottom: env(safe-area-inset-bottom);
+    transform: translateY(105%);
+    visibility: hidden;
+    transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.38s;
 }
 
-.chip:hover {
-    border-color: #8b949e;
+.sheet.open {
+    transform: none;
+    visibility: visible;
+    transition-delay: 0s;
+}
+
+.sheet-drag {
+    touch-action: none;
+}
+
+.sheet-grab {
+    width: 40px;
+    height: 4px;
+    margin: 8px auto 4px;
+    border-radius: 2px;
+    background: #484f58;
+}
+
+.sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 12px 0 18px;
+}
+
+.sheet-head h2 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
     color: var(--text-bright);
 }
 
+.sheet-sub {
+    margin: 2px 18px 8px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.sheet-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 10px 12px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Один рядок = одна тема */
+.chip {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 13px 14px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.chip:hover {
+    background: var(--card-2);
+    color: var(--text-bright);
+}
+
+.chip-name {
+    flex: 1;
+    min-width: 0;
+}
+
+.chip-count {
+    flex: 0 0 auto;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--card-2);
+    padding: 2px 9px;
+    border-radius: 999px;
+}
+
 .chip.active {
-    background: rgba(56, 139, 253, 0.15);
+    background: rgba(56, 139, 253, 0.12);
+    border-color: rgba(56, 139, 253, 0.35);
     color: #58a6ff;
-    border-color: rgba(56, 139, 253, 0.4);
+}
+
+.chip.active .chip-count {
+    background: rgba(56, 139, 253, 0.2);
+    color: #58a6ff;
+}
+
+.chip.active::after {
+    content: "✓";
+    flex: 0 0 auto;
+    font-weight: 700;
+}
+
+@media (min-width: 641px) {
+    .sheet {
+        left: 50%;
+        right: auto;
+        bottom: auto;
+        top: 72px;
+        width: 480px;
+        max-height: calc(100vh - 110px);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        transform: translate(-50%, -10px) scale(0.98);
+        opacity: 0;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, visibility 0s linear 0.3s;
+    }
+
+    .sheet.open {
+        transform: translate(-50%, 0) scale(1);
+        opacity: 1;
+    }
+
+    .sheet-grab {
+        display: none;
+    }
+
+    .sheet-head {
+        padding-top: 14px;
+    }
 }
 
 /* ============================================================
