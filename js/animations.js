@@ -3,7 +3,7 @@
    дані чи логіку main.js / search.js.
    Підключається в <head> (щоб клас .js з'явився до першого малювання).
    ============================================================ */
-(function() {
+(function () {
     "use strict";
 
     function ready(fn) {
@@ -24,8 +24,8 @@
 
     function initHaptics() {
         // Вібруємо, коли main.js успішно скопіював код (кнопка отримує клас .copied)
-        new MutationObserver(function(mutations) {
-            mutations.forEach(function(m) {
+        new MutationObserver(function (mutations) {
+            mutations.forEach(function (m) {
                 var t = m.target;
                 if (
                     t.classList &&
@@ -46,7 +46,7 @@
         // Пасхалка на бейджі — подвійний короткий «бзз»
         var badge = document.getElementById("secret-badge");
         if (badge) {
-            badge.addEventListener("click", function() {
+            badge.addEventListener("click", function () {
                 buzz([20, 50, 20]);
             });
         }
@@ -56,7 +56,7 @@
 
     // Поважаємо системне «зменшити рух»: нічого не ховаємо і не анімуємо
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        ready(function() { initNeonField(true); }); // лише статичні крапки, без руху й ліній
+        ready(function () { initNeonField(true); }); // лише статичні крапки, без руху й ліній
         return;
     }
 
@@ -81,27 +81,28 @@
         }
 
         var io = new IntersectionObserver(
-            function(entries) {
+            function (entries) {
                 // Каскад: зверху вниз, до 6 кроків по 70мс
                 var visible = entries
-                    .filter(function(e) { return e.isIntersecting; })
-                    .sort(function(a, b) {
+                    .filter(function (e) { return e.isIntersecting; })
+                    .sort(function (a, b) {
                         return a.boundingClientRect.top - b.boundingClientRect.top;
                     });
 
-                visible.forEach(function(entry, i) {
+                visible.forEach(function (entry, i) {
                     entry.target.style.setProperty("--d", Math.min(i, 5) * 70 + "ms");
                     show(entry.target);
                     io.unobserve(entry.target);
                 });
-            }, { rootMargin: "0px 0px -30px 0px", threshold: 0.01 }
+            },
+            { rootMargin: "0px 0px -30px 0px", threshold: 0.01 }
         );
 
         function watch(el) {
             if (el.nodeType !== 1) return;
             var nodes = el.matches(REVEAL_SELECTOR) ? [el] : [];
             nodes = nodes.concat(Array.prototype.slice.call(el.querySelectorAll(REVEAL_SELECTOR)));
-            nodes.forEach(function(n) {
+            nodes.forEach(function (n) {
                 if (n.classList.contains("in") || waiting.has(n)) return;
                 waiting.add(n);
                 io.observe(n);
@@ -113,8 +114,8 @@
         // Картки скриптів main.js додає в #cards динамічно
         var cards = document.getElementById("cards");
         if (cards) {
-            new MutationObserver(function(mutations) {
-                mutations.forEach(function(m) {
+            new MutationObserver(function (mutations) {
+                mutations.forEach(function (m) {
                     m.addedNodes.forEach(watch);
                 });
             }).observe(cards, { childList: true });
@@ -124,23 +125,24 @@
         var ticking = false;
         window.addEventListener(
             "scroll",
-            function() {
+            function () {
                 if (ticking || !waiting.size) return;
                 ticking = true;
-                requestAnimationFrame(function() {
+                requestAnimationFrame(function () {
                     ticking = false;
                     var atBottom =
                         window.innerHeight + window.scrollY >=
                         document.documentElement.scrollHeight - 2;
                     if (atBottom) {
-                        Array.from(waiting).forEach(function(el, i) {
+                        Array.from(waiting).forEach(function (el, i) {
                             el.style.setProperty("--d", Math.min(i, 5) * 70 + "ms");
                             show(el);
                             io.unobserve(el);
                         });
                     }
                 });
-            }, { passive: true }
+            },
+            { passive: true }
         );
     }
 
@@ -151,7 +153,7 @@
         var results = document.getElementById("results");
         if (!results) return;
 
-        var STEP = 50; // мс між сусідніми картками
+        var STEP = 50;        // мс між сусідніми картками
         var STAGGER_MAX = 10; // після 10-ї затримка більше не росте
         var lastSignature = null;
         var waiting = new Set();
@@ -165,24 +167,25 @@
 
         if ("IntersectionObserver" in window) {
             io = new IntersectionObserver(
-                function(entries) {
+                function (entries) {
                     entries
-                        .filter(function(e) { return e.isIntersecting; })
-                        .sort(function(a, b) {
+                        .filter(function (e) { return e.isIntersecting; })
+                        .sort(function (a, b) {
                             return a.boundingClientRect.top - b.boundingClientRect.top;
                         })
-                        .forEach(function(entry, i) {
+                        .forEach(function (entry, i) {
                             show(entry.target, i);
                             io.unobserve(entry.target);
                         });
-                }, { rootMargin: "0px 0px -30px 0px", threshold: 0.01 }
+                },
+                { rootMargin: "0px 0px -30px 0px", threshold: 0.01 }
             );
         }
 
         function animate() {
             var children = Array.prototype.slice.call(results.children);
             var signature = children
-                .map(function(c) { return c.textContent; })
+                .map(function (c) { return c.textContent; })
                 .join("\u0001");
 
             // Попередні (вже видалені з DOM) картки більше не слідкуємо
@@ -194,7 +197,7 @@
             var same = signature === lastSignature;
             lastSignature = signature;
 
-            children.forEach(function(child) {
+            children.forEach(function (child) {
                 if (same || !io) {
                     child.classList.add("in", "instant");
                 } else {
@@ -212,7 +215,7 @@
         if (chips) {
             chips.addEventListener(
                 "click",
-                function(e) {
+                function (e) {
                     if (e.target.closest(".chip")) lastSignature = null;
                 },
                 true
@@ -223,22 +226,23 @@
         var ticking = false;
         window.addEventListener(
             "scroll",
-            function() {
+            function () {
                 if (ticking || !waiting.size) return;
                 ticking = true;
-                requestAnimationFrame(function() {
+                requestAnimationFrame(function () {
                     ticking = false;
                     var atBottom =
                         window.innerHeight + window.scrollY >=
                         document.documentElement.scrollHeight - 2;
                     if (atBottom) {
-                        Array.from(waiting).forEach(function(el, i) {
+                        Array.from(waiting).forEach(function (el, i) {
                             if (io) io.unobserve(el);
                             show(el, i);
                         });
                     }
                 });
-            }, { passive: true }
+            },
+            { passive: true }
         );
 
         // Початковий список search.js вже відрендерив до нашого запуску
@@ -253,7 +257,7 @@
         var body = document.body;
         var html = document.documentElement;
 
-        badge.addEventListener("click", function() {
+        badge.addEventListener("click", function () {
             // Центр нахилу — середина видимого екрана, а не всієї (довгої) сторінки
             body.style.transformOrigin = "50% " + (window.scrollY + window.innerHeight / 2) + "px";
             html.classList.add("glitch-page-on");
@@ -264,7 +268,7 @@
             body.classList.add("glitch-page");
         });
 
-        body.addEventListener("animationend", function(e) {
+        body.addEventListener("animationend", function (e) {
             if (e.target !== body) return; // ігноруємо анімації дочірніх елементів
             body.classList.remove("glitch-page");
             html.classList.remove("glitch-page-on");
@@ -289,15 +293,15 @@
         }
 
         // ---------- НАЛАШТУВАННЯ ----------
-        var CELL = 72; // середня відстань між крапками, px (менше = більше крапок)
-        var LINK_RADIUS = 190; // з якої відстані від курсора крапки «тягнуть» лінії
-        var MAX_LINES = 10; // максимум ліній одночасно
-        var IDLE_MS = 900; // через скільки мс після зупинки курсора лінії згасають
-        var DRIFT = 4; // повільний «дрейф» крапок, px (0 = нерухомі)
-        var COLORS = [ // неонові кольори ліній (RGB)
-            [34, 211, 238], // ціан
-            [88, 166, 255], // синій
-            [167, 139, 250] // фіолетовий
+        var CELL = 72;          // середня відстань між крапками, px (менше = більше крапок)
+        var LINK_RADIUS = 190;  // з якої відстані від курсора крапки «тягнуть» лінії
+        var MAX_LINES = 10;     // максимум ліній одночасно
+        var IDLE_MS = 900;      // через скільки мс після зупинки курсора лінії згасають
+        var DRIFT = 4;          // повільний «дрейф» крапок, px (0 = нерухомі)
+        var COLORS = [          // неонові кольори ліній (RGB)
+            [34, 211, 238],     // ціан
+            [88, 166, 255],     // синій
+            [167, 139, 250]     // фіолетовий
         ];
         // -----------------------------------
 
@@ -326,18 +330,25 @@
             for (var r = 0; r < rows; r++) {
                 for (var c = 0; c < cols; c++) {
                     if (Math.random() < 0.12) continue;
+
+                    // ~14% крапок — «яскраві зорі» (більші, зі світінням),
+                    // решта — дрібні цятки, як тло зоряного неба
+                    var bright = Math.random() < 0.14;
+
                     dots.push({
                         nx: (c + Math.random()) / cols,
                         ny: (r + Math.random()) / rows,
                         x: 0,
                         y: 0,
                         d: 1e9,
-                        r: 0.7 + Math.random() * 0.9,
-                        a: 0.22 + Math.random() * 0.3,
+                        star: bright,
+                        r: bright ? 1.3 + Math.random() * 1.5 : 0.4 + Math.random() * 0.7,
+                        a: bright ? 0.55 + Math.random() * 0.35 : 0.15 + Math.random() * 0.25,
                         ph: Math.random() * 6.283,
-                        sp: 0.25 + Math.random() * 0.5,
+                        sp: 0.15 + Math.random() * (bright ? 0.5 : 0.35), // швидкість мерехтіння
+                        tw: bright ? 0.5 : 0.25,                          // сила мерехтіння
                         col: COLORS[(Math.random() * COLORS.length) | 0],
-                        p: 0, // прогрес лінії 0..1 (скільки «виросла»)
+                        p: 0,        // прогрес лінії 0..1 (скільки «виросла»)
                         want: false
                     });
                 }
@@ -377,7 +388,7 @@
             }
             for (i = 0; i < near.length; i++) near[i].want = true;
 
-            // Базові крапки
+            // Базові крапки — зорі: мерехтять і трохи світяться
             ctx.globalCompositeOperation = "source-over";
             for (i = 0; i < dots.length; i++) {
                 d = dots[i];
@@ -385,7 +396,28 @@
                 if (d.p < 0.004) d.p = 0;
                 d.want = false;
 
-                ctx.fillStyle = "rgba(139,148,158," + d.a + ")";
+                // Мерехтіння: 0..1, кожна зоря — з власною фазою й швидкістю
+                var flicker = staticOnly
+                    ? 1
+                    : 1 - d.tw + d.tw * (0.5 + 0.5 * Math.sin(t * d.sp + d.ph));
+                var alpha = d.a * flicker;
+
+                if (d.star) {
+                    // М'яке сяйво навколо яскравих зірок
+                    var glowR = d.r * 5;
+                    var glow = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, glowR);
+                    glow.addColorStop(0, "rgba(255,255,255," + alpha * 0.35 + ")");
+                    glow.addColorStop(1, "rgba(255,255,255,0)");
+                    ctx.fillStyle = glow;
+                    ctx.beginPath();
+                    ctx.arc(d.x, d.y, glowR, 0, 6.2832);
+                    ctx.fill();
+
+                    ctx.fillStyle = "rgba(255,255,255," + alpha + ")";
+                } else {
+                    ctx.fillStyle = "rgba(180,190,205," + alpha + ")";
+                }
+
                 ctx.beginPath();
                 ctx.arc(d.x, d.y, d.r, 0, 6.2832);
                 ctx.fill();
@@ -398,9 +430,9 @@
                 d = dots[i];
                 if (d.p < 0.01) continue;
 
-                var k = 1 - Math.min(1, d.d / LINK_RADIUS); // ближче до курсора — яскравіше
+                var k = 1 - Math.min(1, d.d / LINK_RADIUS);   // ближче до курсора — яскравіше
                 var s = d.p * (0.35 + 0.65 * k);
-                var e = d.p * d.p * (3 - 2 * d.p); // плавне «виростання»
+                var e = d.p * d.p * (3 - 2 * d.p);            // плавне «виростання»
                 var ex = d.x + (pointer.sx - d.x) * e;
                 var ey = d.y + (pointer.sy - d.y) * e;
                 var rgb = d.col[0] + "," + d.col[1] + "," + d.col[2];
@@ -464,7 +496,7 @@
         } else {
             window.addEventListener("pointermove", onPointer, { passive: true });
             window.addEventListener("pointerdown", onPointer, { passive: true });
-            document.documentElement.addEventListener("mouseleave", function() {
+            document.documentElement.addEventListener("mouseleave", function () {
                 pointer.on = false;
             });
             raf = requestAnimationFrame(loop);
@@ -474,9 +506,9 @@
         // перегенеровуємо лише якщо площа помітно змінилась (щоб не мигало
         // від зникнення/появи адресного рядка на телефоні)
         var resizeTimer;
-        window.addEventListener("resize", function() {
+        window.addEventListener("resize", function () {
             clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(function() {
+            resizeTimer = setTimeout(function () {
                 var oldArea = w * h;
                 resizeCanvas();
                 var ratio = (w * h) / (oldArea || 1);
@@ -496,9 +528,9 @@
         CSS.highlights.set("code-untyped", untyped);
         CSS.highlights.set("code-caret", caret);
 
-        var VISIBLE_HEIGHT = 320; // max-height блоку pre у style.css
-        var CHARS_PER_SECOND = 40; // ШВИДКІСТЬ ДРУКУ: символів за секунду (менше = повільніше)
-        var MAX_TYPING_MS = 12000; // скільки максимум «друкуємо»; решта коду відкривається одразу
+        var VISIBLE_HEIGHT = 320;      // max-height блоку pre у style.css
+        var CHARS_PER_SECOND = 300;    // ШВИДКІСТЬ ДРУКУ: символів за секунду (менше = повільніше)
+        var MAX_TYPING_MS = 3000;      // скільки максимум «друкуємо»; решта коду відкривається одразу
         var current = null;
 
         function stop() {
@@ -536,8 +568,8 @@
 
             var maxChars = Math.floor((CHARS_PER_SECOND * MAX_TYPING_MS) / 1000);
             var startTime = performance.now();
-            var pos = 0; // позиція в тексті
-            var typed = 0; // скільки видимих символів (без пробілів) уже «надруковано»
+            var pos = 0;     // позиція в тексті
+            var typed = 0;   // скільки видимих символів (без пробілів) уже «надруковано»
             var rest = document.createRange();
             var cur = document.createRange();
 
@@ -578,7 +610,7 @@
         }
 
         // Спрацьовує ПІСЛЯ обробника кнопки в main.js, тож клас .collapsed вже оновлено
-        document.addEventListener("click", function(e) {
+        document.addEventListener("click", function (e) {
             var btn = e.target.closest(".toggle-btn");
             if (!btn) return;
 
@@ -594,7 +626,7 @@
         });
     }
 
-    ready(function() {
+    ready(function () {
         initReveal();
         initResults();
         initGlitch();
