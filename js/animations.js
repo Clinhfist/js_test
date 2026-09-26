@@ -321,6 +321,43 @@
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         }
 
+        // Кольорові «температури» зірок — як на реальних астрофото:
+        // здебільшого білі й тепло-білі, трохи блакитних (гарячих) і
+        // помаранчевих (холодних), зваженою вибіркою.
+        var STAR_TINTS = [
+            { c: [255, 255, 255], w: 40 }, // біла
+            { c: [255, 244, 221], w: 25 }, // тепло-біла
+            { c: [202, 225, 255], w: 18 }, // блакитно-біла (гарячі зорі)
+            { c: [255, 214, 170], w: 12 }, // помаранчева
+            { c: [255, 179, 140], w: 5 }   // червонувата (рідкісні холодні зорі)
+        ];
+        var STAR_TINT_TOTAL = STAR_TINTS.reduce(function (s, t) { return s + t.w; }, 0);
+        function pickTint() {
+            var r = Math.random() * STAR_TINT_TOTAL;
+            for (var i = 0; i < STAR_TINTS.length; i++) {
+                r -= STAR_TINTS[i].w;
+                if (r <= 0) return STAR_TINTS[i].c;
+            }
+            return STAR_TINTS[0].c;
+        }
+
+        // Три «яруси» зірок за розміром і яскравістю — переважна більшість
+        // мають бути крихітними й ледь помітними, і лише одиниці — акцентними.
+        var STAR_TIERS = [
+            { p: 0.90, rMin: 0.4, rMax: 0.9, aMin: 0.12, aMax: 0.32, whiteChance: 0.88, star: false, twinkleChance: 0.10 }, // дрібні, тьмяні
+            { p: 0.09, rMin: 0.9, rMax: 1.45, aMin: 0.32, aMax: 0.58, whiteChance: 0.6, star: false, twinkleChance: 0.35 }, // середні
+            { p: 0.01, rMin: 1.5, rMax: 2.1, aMin: 0.65, aMax: 0.9, whiteChance: 0.35, star: true, twinkleChance: 0.7 }   // акцентні, з м'яким сяйвом
+        ];
+        function pickTier() {
+            var r = Math.random();
+            var acc = 0;
+            for (var i = 0; i < STAR_TIERS.length; i++) {
+                acc += STAR_TIERS[i].p;
+                if (r <= acc) return STAR_TIERS[i];
+            }
+            return STAR_TIERS[STAR_TIERS.length - 1];
+        }
+
         // «Розкидана сітка»: по одній випадковій крапці в кожній клітинці,
         // частину клітинок пропускаємо — виглядає довільно, але без згустків
         function build() {
@@ -331,9 +368,15 @@
                 for (var c = 0; c < cols; c++) {
                     if (Math.random() < 0.12) continue;
 
-                    // ~14% крапок — «яскраві зорі» (більші, зі світінням),
-                    // решта — дрібні цятки, як тло зоряного неба
-                    var bright = Math.random() < 0.14;
+                    var tier = pickTier();
+
+                    // Мерехтить лише частина зірок кожного ярусу — переважно
+                    // серед середніх/акцентних, дрібні майже завжди стабільні
+                    var doTwinkle = Math.random() < tier.twinkleChance;
+
+                    // Колір: здебільшого чисто білий (особливо серед дрібних),
+                    // пастельний відтінок — рідкісний штрих, а не правило
+                    var tint = Math.random() < tier.whiteChance ? [255, 255, 255] : pickTint();
 
                     dots.push({
                         nx: (c + Math.random()) / cols,
@@ -341,17 +384,22 @@
                         x: 0,
                         y: 0,
                         d: 1e9,
-                        star: bright,
-                        r: bright ? 1.3 + Math.random() * 1.5 : 0.4 + Math.random() * 0.7,
-                        a: bright ? 0.55 + Math.random() * 0.35 : 0.15 + Math.random() * 0.25,
+                        star: tier.star,
+                        r: tier.rMin + Math.random() * (tier.rMax - tier.rMin),
+                        a: tier.aMin + Math.random() * (tier.aMax - tier.aMin),
                         ph: Math.random() * 6.283,
-                        sp: 0.15 + Math.random() * (bright ? 0.5 : 0.35), // швидкість мерехтіння
-                        tw: bright ? 0.5 : 0.25,                          // сила мерехтіння
+                        // швидкість і сила мерехтіння — виразні лише в «мерехтливих» зірок,
+                        // решта майже нерухомі (тонкий, ледь помітний подих)
+                        sp: doTwinkle ? 0.25 + Math.random() * 0.9 : 0.05 + Math.random() * 0.08,
+                        tw: doTwinkle ? 0.5 + Math.random() * 0.35 : 0.04 + Math.random() * 0.05,
+                        twinkle: doTwinkle,
+                        tint: tint,
                         col: COLORS[(Math.random() * COLORS.length) | 0],
                         p: 0,        // прогрес лінії 0..1 (скільки «виросла»)
                         want: false
                     });
                 }
+
             }
         }
 
@@ -402,25 +450,44 @@
                     : 1 - d.tw + d.tw * (0.5 + 0.5 * Math.sin(t * d.sp + d.ph));
                 var alpha = d.a * flicker;
 
+                var tintStr = d.tint[0] + "," + d.tint[1] + "," + d.tint[2];
+
                 if (d.star) {
-                    // М'яке сяйво навколо яскравих зірок
-                    var glowR = d.r * 5;
+                    // Єдиний плавний градієнт від яскравого центру до прозорого краю —
+                    // без окремого суцільного кружечка всередині, щоб зоря не виглядала
+                    // як заштрихована 3D-кулька, а як м'яка цятка світла
+                    var glowR = d.r * 4;
                     var glow = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, glowR);
-                    glow.addColorStop(0, "rgba(255,255,255," + alpha * 0.35 + ")");
-                    glow.addColorStop(1, "rgba(255,255,255,0)");
+                    glow.addColorStop(0, "rgba(" + tintStr + "," + alpha + ")");
+                    glow.addColorStop(0.22, "rgba(" + tintStr + "," + alpha * 0.75 + ")");
+                    glow.addColorStop(0.55, "rgba(" + tintStr + "," + alpha * 0.18 + ")");
+                    glow.addColorStop(1, "rgba(" + tintStr + ",0)");
                     ctx.fillStyle = glow;
                     ctx.beginPath();
                     ctx.arc(d.x, d.y, glowR, 0, 6.2832);
                     ctx.fill();
-
-                    ctx.fillStyle = "rgba(255,255,255," + alpha + ")";
                 } else {
-                    ctx.fillStyle = "rgba(180,190,205," + alpha + ")";
+                    // тьмяні фонові зорі — теж із легким відтінком, а не чистим сірим
+                    ctx.fillStyle = "rgba(" + tintStr + "," + alpha * 0.85 + ")";
+                    ctx.beginPath();
+                    ctx.arc(d.x, d.y, d.r, 0, 6.2832);
+                    ctx.fill();
                 }
 
-                ctx.beginPath();
-                ctx.arc(d.x, d.y, d.r, 0, 6.2832);
-                ctx.fill();
+                // На піку мерехтіння яскраві мерехтливі зорі дають тонкий
+                // хрестоподібний відблиск — як дифракційні промені на фото неба
+                if (d.star && d.twinkle && flicker > 0.86) {
+                    var spikeA = (flicker - 0.86) / 0.14 * alpha * 0.75;
+                    var sl = d.r * 9;
+                    ctx.strokeStyle = "rgba(" + tintStr + "," + spikeA + ")";
+                    ctx.lineWidth = 0.6;
+                    ctx.beginPath();
+                    ctx.moveTo(d.x - sl, d.y);
+                    ctx.lineTo(d.x + sl, d.y);
+                    ctx.moveTo(d.x, d.y - sl);
+                    ctx.lineTo(d.x, d.y + sl);
+                    ctx.stroke();
+                }
             }
 
             // Неонові лінії (адитивне змішування дає ефект світіння)
