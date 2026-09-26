@@ -298,10 +298,16 @@ section {
 
 .card-head {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 16px;
+    gap: 10px 16px;
     padding: 16px 18px;
+}
+
+.card-head>div:first-child {
+    min-width: 0;
+    flex: 1 1 200px;
 }
 
 .card-head h3 {
@@ -418,4 +424,53 @@ footer {
     padding: 32px 0;
     border-top: 1px solid var(--border);
     margin-top: 32px;
+}
+
+/* ============================================================
+   МОБІЛЬНА АДАПТИВНІСТЬ (компактно: лише те, що реально «пливе»)
+   ============================================================ */
+@media (max-width: 640px) {
+
+    .container {
+        padding: 0 14px;
+    }
+
+    .hero {
+        padding: 40px 0 28px;
+    }
+
+    .btn {
+        margin: 5px 3px;
+        padding: 10px 14px;
+    }
+
+    .step {
+        flex-wrap: wrap;
+        padding: 14px;
+    }
+
+    .card-head {
+        padding: 14px;
+    }
+
+    .card-actions {
+        flex-wrap: wrap;
+    }
+
+    pre {
+        font-size: 12.5px;
+        padding: 14px;
+    }
+}
+
+@media (max-width: 380px) {
+    .hero h1 {
+        font-size: 24px;
+    }
+
+    .btn {
+        display: block;
+        width: 100%;
+        margin: 6px 0;
+    }
 }
