@@ -35,7 +35,7 @@
         inputEl.dispatchEvent(new Event('input', { bubbles: true }));
         inputEl.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', keyCode: 32, which: 32, bubbles: true }));
         inputEl.dispatchEvent(new KeyboardEvent('keyup', { key: ' ', keyCode: 32, which: 32, bubbles: true }));
-        await sleep(50);
+        await sleep(10);
         if (typeof Ext !== 'undefined' && Ext.getCmp) {
             const cmp = Ext.getCmp(inputEl.id);
             if (cmp && cmp.setValue) cmp.setValue(val);
@@ -47,7 +47,7 @@
         inputEl.dispatchEvent(new Event('change', { bubbles: true }));
         inputEl.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', keyCode: 8, which: 8, bubbles: true }));
         inputEl.dispatchEvent(new KeyboardEvent('keyup', { key: 'Backspace', keyCode: 8, which: 8, bubbles: true }));
-        await sleep(100);
+        await sleep(50);
         inputEl.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', keyCode: 13, which: 13, bubbles: true }));
         inputEl.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', keyCode: 13, which: 13, bubbles: true }));
         if (btnEl) btnEl.click();
@@ -95,9 +95,9 @@
         }
         console.log(`[ЕТАП 1] (${i + 1}/${initialItems.length}) Скануємо ШК: ${code}`);
         await setExtValueWithTrigger(input, btn, code);
-        await sleep(250);
+        await sleep(60);
     }
-    await sleep(150); // Даємо час інтерфейсу оновитися після масового сканування
+    await sleep(50); // Даємо час інтерфейсу оновитися після масового сканування
     // --- ЕТАП 2: Повторний аналіз таблиці (що залишилося) ---
     const remainingItems = getValidBarcodes();
     console.log(`[ЕТАП 2] Повторний аналіз. Залишилося в таблиці: ${remainingItems.length}`, remainingItems);
@@ -114,11 +114,11 @@
         console.log(`[ЕТАП 3] (${j + 1}/${remainingItems.length}) Обробка залишку — ШК: ${code}`);
         // 1. Спочатку вводимо сам ШК
         await setExtValueWithTrigger(input, btn, code);
-        await sleep(150);
+        await sleep(60);
         // 2. Одразу після нього вводимо бейдж для підтвердження
         console.log(`[ЕТАП 3] Вводимо бейдж для ШК ${code}: ${backupCode}`);
         await setExtValueWithTrigger(input, btn, backupCode);
-        await sleep(150);
+        await sleep(60);
     }
     alert('Повний цикл сканування завершено!');
 })();
