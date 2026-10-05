@@ -5,22 +5,18 @@
         const target = spans.find(s => s.textContent.includes("ШК для сканування"));
         return target ? (target.closest('a') || target.closest('button') || target.parentElement) : null;
     };
+
+    // --- ВВЕДЕННЯ: число, час, бейдж ---
+    const dayIn = parseInt(prompt('Число дня (наприклад 8):'), 10);
+    if (!dayIn || dayIn < 1 || dayIn > 31) return;
+    const tm = (prompt('Граничний час (ГГ:ХХ), наприклад 11:40:') || '').match(/^(\d{1,2}):(\d{2})$/);
+    if (!tm) return;
+    const limitMin = +tm[1] * 60 + +tm[2];
     const backupCode = prompt('Введіть 10-значний код бейджа:');
     if (!backupCode || backupCode.length !== 10) return;
-    const deadlineStr = prompt('Введіть граничні дату та час (формат: ДД-ММ-ГГГГ ЧЧ:ММ):\nНаприклад: 24-08-2026 11:40');
-    if (!deadlineStr) return;
 
-    function parseDateTime(str) {
-        if (!str) return null;
-        const match = str.match(/(\d{2})-(\d{2})-(\d{4})\s+(\d{2}):(\d{2})/);
-        if (!match) return null;
-        const [, day, month, year, hours, minutes] = match;
-        return new Date(year, month - 1, day, hours, minutes);
-    }
-    const targetDate = parseDateTime(deadlineStr);
-    if (!targetDate || isNaN(targetDate.getTime())) return;
     const sleep = ms => new Promise(r => setTimeout(r, ms));
-    // Надійне введення значення з емуляцією тригера пробілу
+
     async function setExtValueWithTrigger(inputEl, btnEl, val) {
         if (document.activeElement) document.activeElement.blur();
         inputEl.focus();
@@ -52,73 +48,84 @@
         inputEl.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', keyCode: 13, which: 13, bubbles: true }));
         if (btnEl) btnEl.click();
     }
-    // Функція збору ШК з поточного стану таблиці
+
+    // Відбір: рівно це число + час <= дедлайну
     function getValidBarcodes() {
         const rows = Array.from(document.querySelectorAll('tr.x-grid-row'));
         const list = [];
         for (const row of rows) {
             const cells = Array.from(row.querySelectorAll('.x-grid-cell-inner, td.x-grid-cell'));
             let foundBarcode = null;
-            let foundDate = null;
+            let dateOk = false;
             for (const cell of cells) {
                 const text = cell.textContent.trim();
-                if (!foundDate && /\d{2}-\d{2}-\d{4}\s+\d{2}:\d{2}/.test(text)) {
-                    foundDate = parseDateTime(text);
+                if (!dateOk) {
+                    const m = text.match(/^(\d{2})-\d{2}-\d{4}\s+(\d{2}):(\d{2})/);
+                    if (m) dateOk = (+m[1] === dayIn) && ((+m[2] * 60 + +m[3]) <= limitMin);
                 }
                 if (!foundBarcode) {
-                    let clean = text.split('(')[0].trim();
+                    const clean = text.split('(')[0].trim();
                     if (clean.length >= 8 && !clean.includes('-202') && /^[A-Za-z0-9\s-]+$/.test(clean)) {
                         foundBarcode = clean;
                     }
                 }
             }
-            if (foundBarcode && foundDate && foundDate.getTime() <= targetDate.getTime()) {
-                list.push({ code: foundBarcode, date: foundDate.toLocaleString() });
-            }
+            if (foundBarcode && dateOk) list.push(foundBarcode);
         }
-        return list;
+        return [...new Set(list)];
     }
-    // --- ЕТАП 1: Первинний збір і сканування всіх ШК ---
-    const initialItems = getValidBarcodes();
-    console.log(`[ЕТАП 1] Знайдено початкових штрих-кодів: ${initialItems.length}`, initialItems);
-    if (initialItems.length === 0) {
-        alert(`Не знайдено штрих-кодів з датою <= ${deadlineStr}`);
-        return;
-    }
-    for (let i = 0; i < initialItems.length; i++) {
-        const { code } = initialItems[i];
+
+    // --- Підсумок зі швидкістю ---
+    let total = 0, badges = 0;
+    const t0 = performance.now();
+    const report = async title => {
+        await sleep(300);
+        const left = getValidBarcodes().length;
+        const scanned = total - left;
+        const sec = Math.max((performance.now() - t0) / 1000, 0.001);
+        console.log(
+            `${title}\n` +
+            `Відскановано ШК: ${scanned} з ${total} (залишилось: ${left}, з бейджем: ${badges})\n` +
+            `Витрачено часу: ${sec.toFixed(1)} с\n` +
+            `Швидкість: ${(scanned / sec).toFixed(2)} ШК/с`
+        );
+        alert(`${title}\nВідскановано: ${scanned} з ${total}\nЧас: ${sec.toFixed(1)} с\nШвидкість: ${(scanned / sec).toFixed(2)} ШК/с`);
+    };
+
+    // --- ЕТАП 1 ---
+    let items = getValidBarcodes();
+    total = items.length;
+    console.log(`[ЕТАП 1] Знайдено ШК: ${total}`);
+    if (!total) return alert(`Не знайдено ШК за ${dayIn} числа до ${tm[0]}`);
+
+    for (let i = 0; i < items.length; i++) {
         const input = getInputField();
         const btn = getScanButton();
-        if (!input) {
-            alert("Не знайдено поле name='ScannedBarcode'!");
-            break;
-        }
-        console.log(`[ЕТАП 1] (${i + 1}/${initialItems.length}) Скануємо ШК: ${code}`);
-        await setExtValueWithTrigger(input, btn, code);
+        if (!input) { console.log("Не знайдено поле name='ScannedBarcode'!"); break; }
+        await setExtValueWithTrigger(input, btn, items[i]);
         await sleep(250);
+        if ((i + 1) % 10 === 0) console.log(`[1] ${i + 1}/${items.length}`);
     }
-    await sleep(150); // Даємо час інтерфейсу оновитися після масового сканування
-    // --- ЕТАП 2: Повторний аналіз таблиці (що залишилося) ---
-    const remainingItems = getValidBarcodes();
-    console.log(`[ЕТАП 2] Повторний аналіз. Залишилося в таблиці: ${remainingItems.length}`, remainingItems);
-    if (remainingItems.length === 0) {
-        alert('Усі штрих-коди успішно відскановані на першому етапі!');
-        return;
-    }
-    // --- ЕТАП 3: Досканування залишків через зв'язку "ШК -> Бейдж" ---
-    for (let j = 0; j < remainingItems.length; j++) {
-        const { code } = remainingItems[j];
+    items = null;
+    await sleep(150);
+
+    // --- ЕТАП 2: що залишилось ---
+    const remaining = getValidBarcodes();
+    console.log(`[ЕТАП 2] Залишилось (потрібен бейдж): ${remaining.length}`);
+    if (!remaining.length) return report('✅ Усе відскановано на першому етапі');
+
+    // --- ЕТАП 3: ШК -> бейдж ---
+    for (let j = 0; j < remaining.length; j++) {
         const input = getInputField();
         const btn = getScanButton();
         if (!input) break;
-        console.log(`[ЕТАП 3] (${j + 1}/${remainingItems.length}) Обробка залишку — ШК: ${code}`);
-        // 1. Спочатку вводимо сам ШК
-        await setExtValueWithTrigger(input, btn, code);
+        await setExtValueWithTrigger(input, btn, remaining[j]);
         await sleep(150);
-        // 2. Одразу після нього вводимо бейдж для підтвердження
-        console.log(`[ЕТАП 3] Вводимо бейдж для ШК ${code}: ${backupCode}`);
         await setExtValueWithTrigger(input, btn, backupCode);
         await sleep(150);
+        badges++;
+        if ((j + 1) % 10 === 0) console.log(`[3] ${j + 1}/${remaining.length}`);
     }
-    alert('Повний цикл сканування завершено!');
+
+    await report('✅ Повний цикл завершено');
 })();
