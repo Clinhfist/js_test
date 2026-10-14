@@ -1,0 +1,15 @@
+{
+ "version": "2026-10-14.fb652ef7",
+ "updated": "2026-10-14T11:37:45.227Z",
+ "files": {
+  "answers.json": {
+   "sha256": "56c02fc748bcc2c931b5bce453f3b6a567409d488aea5aa06f2965a220a90f1c"
+  },
+  "index.json": {
+   "sha256": "3c016db29b1e003f3de2e85c5786288f24ee32b4b4274a67bffb9a8ec848e0f9"
+  },
+  "config.json": {
+   "sha256": "c3c0f0d7ed4139dcd4cd5ccbbd6763413f57f00d2443a2d4d5186e4bbdfe0433"
+  }
+ }
+}
