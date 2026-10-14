@@ -39,7 +39,7 @@
         const entries = [];
 
         // Категорії типу "питання -> відповідь"
-        ["LEAN", "DANGER", "Book1", "SORTING", "BDF", "UNKNOWN", "5S", "SCANNING"].forEach((key) => {
+        ["LEAN", "DANGER", "Book1", "SORTING", "BDF", "UNKNOWN", "5 S", "SCANNING"].forEach((key) => {
             const obj = db[key] || {};
             const cat = CATEGORY_LABELS[key];
             Object.entries(obj).forEach(([q, a]) => {
