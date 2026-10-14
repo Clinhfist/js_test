@@ -15,7 +15,7 @@ const sha = s => crypto.createHash("sha256").update(s, "utf8").digest("hex");
 // Новий тест: додайте рядок сюди (або залиште без нього — тоді він буде лише в загальному пошуку).
 const FILE_MAP = {
   "scripts/lean.js":        { type: "quiz",   answers: "LEAN" },
-  "scripts/5s.js":        { type: "quiz",   answers: "5 S" },
+  "scripts/5S.js":        { type: "quiz",   answers: "5 S" },
   "scripts/book1.js":       { type: "quiz",   answers: "Book1" },
   "scripts/book2.js":       { type: "quiz",   answers: "DANGER" },
   "scripts/BDF.js":         { type: "quiz",   answers: "BDF" },
