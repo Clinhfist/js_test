@@ -31,7 +31,6 @@
         BDF: "Завантаження та вивантаження БДФ",
         UNKNOWN: "Робота з невпізнаним вантажем",
         SCANNING: "Відомості сканування",
-        "5 S": "5S - Фундамент стабільності",
         MEDICAL: "Перша медична (MARCH)",
     };
 
@@ -39,7 +38,7 @@
         const entries = [];
 
         // Категорії типу "питання -> відповідь"
-        ["LEAN", "DANGER", "Book1", "SORTING", "BDF", "UNKNOWN", "5 S", "SCANNING"].forEach((key) => {
+        ["LEAN", "DANGER", "Book1", "SORTING", "BDF", "UNKNOWN", "SCANNING"].forEach((key) => {
             const obj = db[key] || {};
             const cat = CATEGORY_LABELS[key];
             Object.entries(obj).forEach(([q, a]) => {

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Tools Ext. — Браузерне розширення</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22> >_ </text></svg>">
+    <!-- Підключення стилів та анімацій сайту -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/ext.css" />
+    <script src="js/animations.js" defer></script>
+</head>
+
+<body>
+    <!-- Кнопка повернення назад -->
+    <a class="icon-btn back" href="index.html" aria-label="На головну">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" />
+        </svg>
+    </a>
+    <div class="container">
+        <!-- Hero секція розширення -->
+        <header class="hero">
+            <div class="badge">
+                <span>>_ JS Tools Ext.</span>
+            </div>
+            <h1>Браузерне розширення для <span class="accent">автоматизації</span></h1>
+            <p>Браузерне розширення для автоматичного проходження тестів, обробки матеріалів та роботи з базами даних прямо у вашому браузері.</p>
+            <div style="margin-top: 24px;">
+                <a href="https://github.com/Clinhfist/JS-Tools-Ext/archive/refs/heads/main.zip" class="btn btn-primary">
+                    📥 Завантажити архів з розширенням
+                </a>
+            </div>
+        </header>
+        <!-- Секція інструкції (у стилі карток та кроків головної сторінки) -->
+        <section>
+            <h2 class="section-title">📖 Інструкція зі встановлення</h2>
+            <p class="section-sub">Крок за кроком для швидкого запуску у вашому браузері</p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div>
+                        <h3>Завантаження</h3>
+                        <p>Завантажте та розпакуйте архів із розширенням на свій комп'ютер.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div>
+                        <h3>Сторінка розширень</h3>
+                        <p>Відкрийте ваш браузер (Chrome, Brave тощо) та перейдіть за адресою: <code>chrome://extensions</code></p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div>
+                        <h3>Режим розробника</h3>
+                        <p>У правому верхньому кутку сторінки розширень увімкніть тумблер <kbd>Режим розробника (Developer mode)</kbd>.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div>
+                        <h3>Встановлення папки</h3>
+                        <p>У лівому верхньому кутку натисніть кнопку <kbd>Завантажити розпаковане розширення (Load unpacked)</kbd>.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">5</div>
+                    <div>
+                        <h3>Готово!</h3>
+                        <p>Виберіть папку, куди ви розпакували проєкт із розширенням. Іконка з'явиться на панелі інструментів.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">6</div>
+                    <div>
+                        <h3>Оновлення бази</h3>
+                        <p>В налаштуваннях розширення натисніть кнопку: <code>Оновити базу з GitHub</code></p>
+                    </div>
+                </div>
+            </div>
+            <div class="warning">
+                💡 <strong>Порада:</strong> Після оновлення скриптів у репозиторії ви зможете оновлювати їх в один клік прямо всередині розширення.
+            </div>
+        </section>
+        <footer>
+            <div class="container">Зроблено для швидкого запуску JS-скриптів у браузері</div>
+        </footer>
+    </div>
+</body>
+
+</html>

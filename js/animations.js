@@ -64,7 +64,7 @@
 
     // Елементи, що з'являються при скролі (мають збігатися з animations.css)
     var REVEAL_SELECTOR =
-        ".section-title, .section-sub, .step, .warning, .cat-title, #cards .card, footer .container";
+        ".section-title, .btn-ext-neon, .section-sub, .step, .warning, .cat-title, #cards .card, footer .container";
 
     /* ---------- Поява при скролі (index.html) ---------- */
     function initReveal() {
