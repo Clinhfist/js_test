@@ -1,0 +1,31 @@
+/* Кнопка «Назад» у верхньому лівому кутку */
+.icon-btn.back {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    z-index: 100;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: var(--card-2);
+    color: var(--text-bright);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.icon-btn.back:hover {
+    background: #30363d;
+    border-color: #58a6ff;
+    color: #58a6ff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(88, 166, 255, 0.2);
+}
+
+.icon-btn.back:active {
+    transform: translateY(0);
+}

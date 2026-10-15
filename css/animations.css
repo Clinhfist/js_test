@@ -80,9 +80,11 @@ html {
     0% {
         transform: scale(1);
     }
+
     40% {
         transform: scale(1.12);
     }
+
     100% {
         transform: scale(1);
     }
@@ -91,26 +93,40 @@ html {
 /* ============================================================
    INDEX.HTML — HERO (входить при завантаженні, без JS)
    ============================================================ */
-.hero .container > * {
+.hero .container>* {
     animation: heroIn 0.75s var(--ease-out) backwards;
 }
 
-.hero .container > :nth-child(1) { animation-delay: 0.05s; }
-.hero .container > :nth-child(2) { animation-delay: 0.15s; }
-.hero .container > :nth-child(3) { animation-delay: 0.25s; }
-.hero .container > :nth-child(4) { animation-delay: 0.35s; }
-.hero .container > :nth-child(5) { animation-delay: 0.42s; }
+.hero .container> :nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.hero .container> :nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.hero .container> :nth-child(3) {
+    animation-delay: 0.25s;
+}
+
+.hero .container> :nth-child(4) {
+    animation-delay: 0.35s;
+}
+
+.hero .container> :nth-child(5) {
+    animation-delay: 0.42s;
+}
 
 /* ============================================================
    INDEX.HTML — поява елементів при скролі
    Сховані лише коли JS активний (клас .js на <html>),
    тож без JS усе видно як завжди.
    ============================================================ */
-.js :is(.section-title, .section-sub, .step, .warning, .cat-title, #cards .card, footer .container):not(.in) {
+.js :is(.section-title, .btn-ext-neon, .section-sub, .step, .warning, .cat-title, #cards .card, footer .container):not(.in) {
     opacity: 0;
 }
 
-.js :is(.section-title, .section-sub, .step, .warning, .cat-title, #cards .card, footer .container).in {
+.js :is(.section-title, .btn-ext-neon, .section-sub, .step, .warning, .cat-title, #cards .card, footer .container).in {
     animation: riseIn 0.65s var(--ease-out) var(--d, 0ms) backwards;
 }
 
@@ -163,28 +179,62 @@ html {
    ============================================================ */
 
 /* Шапка (один рядок) входить при завантаженні */
-.topbar .bar > * {
+.topbar .bar>* {
     animation: dropIn 0.55s var(--ease-out) backwards;
 }
 
-.topbar .bar > :nth-child(1) { animation-delay: 0.02s; }
-.topbar .bar > :nth-child(2) { animation-delay: 0.08s; }
-.topbar .bar > :nth-child(3) { animation-delay: 0.14s; }
+.topbar .bar> :nth-child(1) {
+    animation-delay: 0.02s;
+}
+
+.topbar .bar> :nth-child(2) {
+    animation-delay: 0.08s;
+}
+
+.topbar .bar> :nth-child(3) {
+    animation-delay: 0.14s;
+}
 
 /* Рядки списку тем з'являються каскадом щоразу, коли панель відкривається */
 .sheet.open .chip {
     animation: sheetRow 0.4s var(--ease-out) backwards;
 }
 
-.sheet.open .chip:nth-child(1) { animation-delay: 0.10s; }
-.sheet.open .chip:nth-child(2) { animation-delay: 0.14s; }
-.sheet.open .chip:nth-child(3) { animation-delay: 0.18s; }
-.sheet.open .chip:nth-child(4) { animation-delay: 0.22s; }
-.sheet.open .chip:nth-child(5) { animation-delay: 0.26s; }
-.sheet.open .chip:nth-child(6) { animation-delay: 0.30s; }
-.sheet.open .chip:nth-child(7) { animation-delay: 0.34s; }
-.sheet.open .chip:nth-child(8) { animation-delay: 0.38s; }
-.sheet.open .chip:nth-child(9) { animation-delay: 0.42s; }
+.sheet.open .chip:nth-child(1) {
+    animation-delay: 0.10s;
+}
+
+.sheet.open .chip:nth-child(2) {
+    animation-delay: 0.14s;
+}
+
+.sheet.open .chip:nth-child(3) {
+    animation-delay: 0.18s;
+}
+
+.sheet.open .chip:nth-child(4) {
+    animation-delay: 0.22s;
+}
+
+.sheet.open .chip:nth-child(5) {
+    animation-delay: 0.26s;
+}
+
+.sheet.open .chip:nth-child(6) {
+    animation-delay: 0.30s;
+}
+
+.sheet.open .chip:nth-child(7) {
+    animation-delay: 0.34s;
+}
+
+.sheet.open .chip:nth-child(8) {
+    animation-delay: 0.38s;
+}
+
+.sheet.open .chip:nth-child(9) {
+    animation-delay: 0.42s;
+}
 
 .chip:active,
 .topics-btn:active {
@@ -194,15 +244,15 @@ html {
 /* Картки результатів з'являються при скролі (клас .in ставить js/animations.js).
    Приховані лише коли JS активний. .instant — без анімації, коли набір
    результатів не змінився (щоб не мигало на кожну літеру). */
-.js #results > :not(.in) {
+.js #results> :not(.in) {
     opacity: 0;
 }
 
-.js #results > .in {
+.js #results>.in {
     animation: riseIn 0.55s var(--ease-out) var(--d, 0ms) backwards;
 }
 
-.js #results > .in.instant {
+.js #results>.in.instant {
     animation: none;
 }
 
@@ -220,17 +270,74 @@ mark {
    ГЛІТЧ бейджа-пасхалки (клас .glitch додає js/animations.js)
    ============================================================ */
 @keyframes glitch {
-    0%   { transform: translate(0); text-shadow: none; clip-path: none; }
-    8%   { transform: translate(-3px, 1px) skewX(-10deg); text-shadow: 3px 0 #ff3860, -3px 0 #00e5ff; clip-path: inset(0 0 55% 0); border-color: #ff3860; }
-    16%  { transform: translate(3px, -1px) skewX(8deg); text-shadow: -3px 0 #ff3860, 3px 0 #00e5ff; clip-path: inset(45% 0 0 0); border-color: #00e5ff; }
-    24%  { transform: translate(-2px, 0); text-shadow: 2px 0 #00e5ff, -2px 0 #ff3860; clip-path: inset(20% 0 40% 0); }
-    32%  { transform: translate(2px, 1px) skewX(-6deg); text-shadow: -2px 0 #ff3860, 2px 0 #00e5ff; clip-path: none; border-color: #ff3860; }
-    40%  { transform: translate(0); text-shadow: none; clip-path: none; }
-    52%  { transform: translate(4px, -1px) skewX(12deg); text-shadow: 4px 0 #00e5ff, -4px 0 #ff3860; clip-path: inset(60% 0 0 0); border-color: #00e5ff; }
-    60%  { transform: translate(-4px, 1px) skewX(-12deg); text-shadow: -4px 0 #ff3860, 4px 0 #00e5ff; clip-path: inset(0 0 65% 0); }
-    70%  { transform: translate(1px, 0); text-shadow: 2px 0 #ff3860, -2px 0 #00e5ff; clip-path: none; }
-    82%  { transform: translate(-1px, 0) skewX(4deg); text-shadow: -1px 0 #00e5ff, 1px 0 #ff3860; }
-    100% { transform: translate(0); text-shadow: none; clip-path: none; }
+    0% {
+        transform: translate(0);
+        text-shadow: none;
+        clip-path: none;
+    }
+
+    8% {
+        transform: translate(-3px, 1px) skewX(-10deg);
+        text-shadow: 3px 0 #ff3860, -3px 0 #00e5ff;
+        clip-path: inset(0 0 55% 0);
+        border-color: #ff3860;
+    }
+
+    16% {
+        transform: translate(3px, -1px) skewX(8deg);
+        text-shadow: -3px 0 #ff3860, 3px 0 #00e5ff;
+        clip-path: inset(45% 0 0 0);
+        border-color: #00e5ff;
+    }
+
+    24% {
+        transform: translate(-2px, 0);
+        text-shadow: 2px 0 #00e5ff, -2px 0 #ff3860;
+        clip-path: inset(20% 0 40% 0);
+    }
+
+    32% {
+        transform: translate(2px, 1px) skewX(-6deg);
+        text-shadow: -2px 0 #ff3860, 2px 0 #00e5ff;
+        clip-path: none;
+        border-color: #ff3860;
+    }
+
+    40% {
+        transform: translate(0);
+        text-shadow: none;
+        clip-path: none;
+    }
+
+    52% {
+        transform: translate(4px, -1px) skewX(12deg);
+        text-shadow: 4px 0 #00e5ff, -4px 0 #ff3860;
+        clip-path: inset(60% 0 0 0);
+        border-color: #00e5ff;
+    }
+
+    60% {
+        transform: translate(-4px, 1px) skewX(-12deg);
+        text-shadow: -4px 0 #ff3860, 4px 0 #00e5ff;
+        clip-path: inset(0 0 65% 0);
+    }
+
+    70% {
+        transform: translate(1px, 0);
+        text-shadow: 2px 0 #ff3860, -2px 0 #00e5ff;
+        clip-path: none;
+    }
+
+    82% {
+        transform: translate(-1px, 0) skewX(4deg);
+        text-shadow: -1px 0 #00e5ff, 1px 0 #ff3860;
+    }
+
+    100% {
+        transform: translate(0);
+        text-shadow: none;
+        clip-path: none;
+    }
 }
 
 #secret-badge.glitch {
@@ -243,17 +350,70 @@ mark {
    отримує весь текст сторінки.
    ============================================================ */
 @keyframes glitchPage {
-    0%   { transform: translate(0); text-shadow: none; filter: none; }
-    8%   { transform: translate(-6px, 1px) skewX(-2deg); text-shadow: 3px 0 #ff3860, -3px 0 #00e5ff; filter: hue-rotate(25deg) saturate(1.5); }
-    16%  { transform: translate(6px, -1px) skewX(1.5deg); text-shadow: -3px 0 #ff3860, 3px 0 #00e5ff; filter: hue-rotate(-25deg) saturate(1.5); }
-    24%  { transform: translate(-3px, 0); text-shadow: 2px 0 #00e5ff, -2px 0 #ff3860; filter: none; }
-    32%  { transform: translate(4px, 1px) skewX(-1.5deg); text-shadow: -2px 0 #ff3860, 2px 0 #00e5ff; filter: invert(0.08) hue-rotate(40deg); }
-    40%  { transform: translate(0); text-shadow: none; filter: none; }
-    52%  { transform: translate(8px, -1px) skewX(2.5deg); text-shadow: 4px 0 #00e5ff, -4px 0 #ff3860; filter: hue-rotate(-40deg) saturate(1.8); }
-    60%  { transform: translate(-8px, 1px) skewX(-2.5deg); text-shadow: -4px 0 #ff3860, 4px 0 #00e5ff; filter: hue-rotate(30deg); }
-    70%  { transform: translate(2px, 0); text-shadow: 2px 0 #ff3860, -2px 0 #00e5ff; filter: none; }
-    82%  { transform: translate(-1px, 0) skewX(0.5deg); text-shadow: -1px 0 #00e5ff, 1px 0 #ff3860; }
-    100% { transform: translate(0); text-shadow: none; filter: none; }
+    0% {
+        transform: translate(0);
+        text-shadow: none;
+        filter: none;
+    }
+
+    8% {
+        transform: translate(-6px, 1px) skewX(-2deg);
+        text-shadow: 3px 0 #ff3860, -3px 0 #00e5ff;
+        filter: hue-rotate(25deg) saturate(1.5);
+    }
+
+    16% {
+        transform: translate(6px, -1px) skewX(1.5deg);
+        text-shadow: -3px 0 #ff3860, 3px 0 #00e5ff;
+        filter: hue-rotate(-25deg) saturate(1.5);
+    }
+
+    24% {
+        transform: translate(-3px, 0);
+        text-shadow: 2px 0 #00e5ff, -2px 0 #ff3860;
+        filter: none;
+    }
+
+    32% {
+        transform: translate(4px, 1px) skewX(-1.5deg);
+        text-shadow: -2px 0 #ff3860, 2px 0 #00e5ff;
+        filter: invert(0.08) hue-rotate(40deg);
+    }
+
+    40% {
+        transform: translate(0);
+        text-shadow: none;
+        filter: none;
+    }
+
+    52% {
+        transform: translate(8px, -1px) skewX(2.5deg);
+        text-shadow: 4px 0 #00e5ff, -4px 0 #ff3860;
+        filter: hue-rotate(-40deg) saturate(1.8);
+    }
+
+    60% {
+        transform: translate(-8px, 1px) skewX(-2.5deg);
+        text-shadow: -4px 0 #ff3860, 4px 0 #00e5ff;
+        filter: hue-rotate(30deg);
+    }
+
+    70% {
+        transform: translate(2px, 0);
+        text-shadow: 2px 0 #ff3860, -2px 0 #00e5ff;
+        filter: none;
+    }
+
+    82% {
+        transform: translate(-1px, 0) skewX(0.5deg);
+        text-shadow: -1px 0 #00e5ff, 1px 0 #ff3860;
+    }
+
+    100% {
+        transform: translate(0);
+        text-shadow: none;
+        filter: none;
+    }
 }
 
 body.glitch-page {
@@ -270,9 +430,17 @@ html.glitch-page-on {
    У спокої колір той самий #58a6ff — змінюється лише під час проходу.
    ============================================================ */
 @keyframes shine {
-    0%   { background-position: 100% 0; }
-    16%  { background-position: 0% 0; }
-    100% { background-position: 0% 0; }
+    0% {
+        background-position: 100% 0;
+    }
+
+    16% {
+        background-position: 0% 0;
+    }
+
+    100% {
+        background-position: 0% 0;
+    }
 }
 
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
