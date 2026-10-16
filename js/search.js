@@ -30,8 +30,8 @@
         SORTING: "Сортування на терміналах та депо",
         BDF: "Завантаження та вивантаження БДФ",
         UNKNOWN: "Робота з невпізнаним вантажем",
+	"5S": "5S - Фундамент стабільності",
         SCANNING: "Відомості сканування",
-       "5S": "5S - Фундамент стабільності",
         MEDICAL: "Перша медична (MARCH)",
     };
 
@@ -39,7 +39,7 @@
         const entries = [];
 
         // Категорії типу "питання -> відповідь"
-        ["LEAN", "DANGER", "Book1", "SORTING", "BDF", "UNKNOWN", "5S", "SCANNING"].forEach((key) => {
+        ["LEAN", "DANGER", "Book1", "SORTING", "5S", "BDF", "UNKNOWN", "SCANNING"].forEach((key) => {
             const obj = db[key] || {};
             const cat = CATEGORY_LABELS[key];
             Object.entries(obj).forEach(([q, a]) => {

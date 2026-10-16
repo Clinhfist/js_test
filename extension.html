@@ -2,94 +2,418 @@
 <html lang="uk">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JS Tools Ext. — Браузерне розширення</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22> >_ </text></svg>">
-    <!-- Підключення стилів та анімацій сайту -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS Tools Ext. — відкрий курс, натисни одну кнопку</title>
+    <meta name="description" content="JS Tools Ext. — розширення для браузера: проводить через навчальний матеріал, доходить до тесту та позначає відповіді з бази. Без консолі й копіювання скриптів." />
+    <meta name="theme-color" content="#070a13" />
+    <link rel="icon" href="img/ico.png" />
+    <script>document.documentElement.classList.add("x-js");</script>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/animations.css" />
     <link rel="stylesheet" href="css/ext.css" />
     <script src="js/animations.js" defer></script>
+    <script src="js/ext.js" defer></script>
 </head>
 
-<body>
-    <!-- Кнопка повернення назад -->
-    <a class="icon-btn back" href="index.html" aria-label="На головну">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M15 18l-6-6 6-6" />
-        </svg>
-    </a>
-    <div class="container">
-        <!-- Hero секція розширення -->
-        <header class="hero">
-            <div class="badge">
-                <span>>_ JS Tools Ext.</span>
+<body class="x-page">
+
+    <!-- ======================= НАВІГАЦІЯ ======================= -->
+    <nav class="x-nav" aria-label="Навігація сторінки">
+        <div class="x-wrap x-nav-in">
+            <a class="x-back" href="index.html" aria-label="До скриптів">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+            </a>
+            <a class="x-brand" href="#top"><img src="img/ico.png" alt="" width="26" height="26"><span><span class="accent">JS Tools</span> Ext.</span></a>
+            <div class="x-links">
+                <a href="#compare">Чому це зручно</a>
+                <a href="#features">Можливості</a>
+                <a href="#how">Як працює</a>
+                <a href="#buttons">Кнопки</a>
+                <a href="#install">Встановлення</a>
+                <a href="#faq">FAQ</a>
             </div>
-            <h1>Браузерне розширення для <span class="accent">автоматизації</span></h1>
-            <p>Браузерне розширення для автоматичного проходження тестів, обробки матеріалів та роботи з базами даних прямо у вашому браузері.</p>
-            <div style="margin-top: 24px;">
-                <a href="https://github.com/Clinhfist/JS-Tools-Ext/archive/refs/heads/main.zip" class="btn btn-primary">
-                    📥 Завантажити архів з розширенням
-                </a>
+            <a class="x-cta-sm" href="https://github.com/Clinhfist/JS-Tools-Ext/archive/refs/heads/main.zip">Завантажити</a>
+        </div>
+    </nav>
+
+    <!-- ======================= HERO ======================= -->
+    <header class="x-hero" id="top">
+        <div class="x-wrap x-hero-grid">
+            <div class="x-hero-copy">
+                <span class="x-eyebrow"><i></i> Розширення для Chrome · Brave · Edge</span>
+                <h1>Відкрий курс.<br>Натисни <span class="x-grad">одну кнопку</span>.</h1>
+                <p class="x-lead">JS Tools Ext. проведе через матеріал, дійде до тесту та позначить відповіді з бази — без консолі, без копіювання скриптів і без зайвих кліків.</p>
+                <div class="x-actions">
+                    <a class="x-btn x-btn-main" href="https://github.com/Clinhfist/JS-Tools-Ext/archive/refs/heads/main.zip">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14" /></svg>
+                        Завантажити розширення
+                    </a>
+                    <a class="x-btn x-btn-ghost" href="#how">Як це працює</a>
+                </div>
+                <ul class="x-trust">
+                    <li>Безкоштовно</li>
+                    <li>Без реєстрації</li>
+                    <li>База оновлюється сама</li>
+                </ul>
             </div>
-        </header>
-        <!-- Секція інструкції (у стилі карток та кроків головної сторінки) -->
-        <section>
-            <h2 class="section-title">📖 Інструкція зі встановлення</h2>
-            <p class="section-sub">Крок за кроком для швидкого запуску у вашому браузері</p>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-num">1</div>
-                    <div>
-                        <h3>Завантаження</h3>
-                        <p>Завантажте та розпакуйте архів із розширенням на свій комп'ютер.</p>
+
+            <!-- Живе демо: макет popup із автопілотом -->
+            <div class="x-demo" aria-hidden="true">
+                <div class="x-orb"></div>
+                <div class="x-browser">
+                    <div class="x-bar">
+                        <i></i><i></i><i></i>
+                        <span class="x-url">app-hcmlms-portal…/LearningModule</span>
+                        <span class="x-exticon"><img src="img/ico.png" alt="" width="22" height="22"><b class="x-badge" id="demoBadge"></b></span>
+                    </div>
+                    <div class="x-popwrap">
+                        <div class="pp" id="demoPopup">
+                            <div class="pp-head">
+                                <div class="pp-brand"><img src="img/ico.png" alt="" width="22" height="22"><span><span class="accent">JS Tools</span> Ext.</span></div>
+                                <span class="pp-ghost">⚙ Налаштування</span>
+                            </div>
+                            <div class="pp-btn">Що на сторінці?</div>
+                            <div class="pp-btn go" id="demoGo">▶ Усе автоматично: матеріал → тест</div>
+                            <div class="pp-btn">Лише тест (на сторінці)</div>
+                            <div class="pp-btn stop">Стоп</div>
+                            <div class="pp-out" id="demoOut"></div>
+                        </div>
                     </div>
                 </div>
-                <div class="step">
-                    <div class="step-num">2</div>
-                    <div>
-                        <h3>Сторінка розширень</h3>
-                        <p>Відкрийте ваш браузер (Chrome, Brave тощо) та перейдіть за адресою: <code>chrome://extensions</code></p>
-                    </div>
+                <span class="x-chip x-chip-1">✓ 24 / 24 відповіді</span>
+                <span class="x-chip x-chip-2">⟳ база оновлена</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ======================= ЦИФРИ ======================= -->
+    <section class="x-sec x-stats-sec">
+        <div class="x-wrap">
+            <div class="x-stats" data-rv>
+                <div class="x-stat"><b data-count="1">1</b><span>клік від курсу до результату</span></div>
+                <div class="x-stat"><b data-count="9" id="statSets">9</b><span>наборів тестів у базі</span></div>
+                <div class="x-stat"><b data-count="245" id="statItems">245</b><span>записів у базі відповідей</span></div>
+                <div class="x-stat"><b data-count="6" data-suffix=" год">6 год</b><span>між автоперевірками оновлень</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= БУЛО / СТАЛО ======================= -->
+    <section class="x-sec" id="compare">
+        <div class="x-wrap">
+            <div class="x-head" data-rv>
+                <span class="x-kicker">Чому це зручно</span>
+                <h2>Раніше — шість дій на кожну сторінку</h2>
+                <p>Скрипти з консолі працюють, але кожного разу треба шукати потрібний, копіювати й вставляти. Розширення робить це за вас.</p>
+            </div>
+            <div class="x-versus">
+                <div class="x-card x-old" data-rv>
+                    <h3><span class="x-tag">Раніше</span> Через консоль</h3>
+                    <ol>
+                        <li><span>Відкрити DevTools (<kbd>F12</kbd>)</span></li>
+                        <li><span>Знайти потрібний скрипт на сайті</span></li>
+                        <li><span>Скопіювати його</span></li>
+                        <li><span>Вставити в консоль</span></li>
+                        <li><span>Натиснути <kbd>Enter</kbd></span></li>
+                        <li><span>Повторити на наступній сторінці</span></li>
+                    </ol>
                 </div>
-                <div class="step">
-                    <div class="step-num">3</div>
-                    <div>
-                        <h3>Режим розробника</h3>
-                        <p>У правому верхньому кутку сторінки розширень увімкніть тумблер <kbd>Режим розробника (Developer mode)</kbd>.</p>
+                <div class="x-card x-new" data-rv>
+                    <h3><span class="x-tag x-tag-v">Тепер</span> З розширенням</h3>
+                    <div class="x-one">
+                        <div class="x-onebtn">▶ Усе автоматично</div>
+                        <p>Одна кнопка в popup. Матеріал, перехід до тесту, пошук і позначення відповідей — далі розширення працює саме.</p>
                     </div>
-                </div>
-                <div class="step">
-                    <div class="step-num">4</div>
-                    <div>
-                        <h3>Встановлення папки</h3>
-                        <p>У лівому верхньому кутку натисніть кнопку <kbd>Завантажити розпаковане розширення (Load unpacked)</kbd>.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-num">5</div>
-                    <div>
-                        <h3>Готово!</h3>
-                        <p>Виберіть папку, куди ви розпакували проєкт із розширенням. Іконка з'явиться на панелі інструментів.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-num">6</div>
-                    <div>
-                        <h3>Оновлення бази</h3>
-                        <p>В налаштуваннях розширення натисніть кнопку: <code>Оновити базу з GitHub</code></p>
-                    </div>
+                    <ul>
+                        <li>Саме розуміє, презентація чи відео перед ним</li>
+                        <li>Не треба пам'ятати, який скрипт до якого курсу</li>
+                        <li>Результат видно на значку іконки</li>
+                    </ul>
                 </div>
             </div>
-            <div class="warning">
-                💡 <strong>Порада:</strong> Після оновлення скриптів у репозиторії ви зможете оновлювати їх в один клік прямо всередині розширення.
+        </div>
+    </section>
+
+    <!-- ======================= МОЖЛИВОСТІ (BENTO) ======================= -->
+    <section class="x-sec" id="features">
+        <div class="x-wrap">
+            <div class="x-head" data-rv>
+                <span class="x-kicker">Можливості</span>
+                <h2>Усе, що потрібно, в одному popup</h2>
+                <p>Логіка живе в розширенні, а база відповідей — у репозиторії сайту. Тому воно просте у використанні й завжди актуальне.</p>
             </div>
-        </section>
-        <footer>
-            <div class="container">Зроблено для швидкого запуску JS-скриптів у браузері</div>
-        </footer>
-    </div>
+            <div class="x-bento">
+                <article class="x-card x-b3" data-rv>
+                    <div class="x-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M10 9.5v5l4.5-2.5z" /></svg></div>
+                    <h3>Проходить матеріал сам</h3>
+                    <p>Гортає слайди презентацій, перемотує відео. Коли «Завершити» стає активною, натискає її, потім «Перейти до тестування» й «Почати тест».</p>
+                    <div class="x-mini x-slides" aria-hidden="true">
+                        <div class="sl"><span class="w80"></span><span class="w60"></span><span class="w70"></span><b>Далі →</b></div>
+                        <div class="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                    </div>
+                </article>
+                <article class="x-card x-b3" data-rv>
+                    <div class="x-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5M8.5 11l1.8 1.8 3.2-3.6" /></svg></div>
+                    <h3>Знаходить відповіді в базі</h3>
+                    <p>Порівнює питання на сторінці з базою — по всій або по обраному набору — і позначає правильні варіанти. Не звертає уваги на регістр і розділові знаки.</p>
+                    <div class="x-mini x-q" aria-hidden="true">
+                        <div>Яка мета методу 5S?</div>
+                        <span>Навести порядок на робочому місці</span>
+                        <span class="ok">✓ Підтримувати чистоту й порядок</span>
+                        <span>Збільшити запаси</span>
+                    </div>
+                </article>
+                <article class="x-card x-b2" data-rv>
+                    <div class="x-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" /><path d="M9 12l2 2 4-4" /></svg></div>
+                    <h3>Обережне завершення</h3>
+                    <p>«Завершити» тест натискається лише якщо відповіді знайдено на <b>всі</b> питання. Інакше тест не відправляється.</p>
+                </article>
+                <article class="x-card x-b2" data-rv>
+                    <div class="x-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4 4 0 010-8 5 5 0 019.6-1.2A4.5 4.5 0 0117 18" /><path d="M12 12v6m0 0l-3-3m3 3l3-3" /></svg></div>
+                    <h3>Оновлюється з GitHub</h3>
+                    <p>Нові відповіді розширення підтягує з репозиторію саме. Перевстановлювати нічого не треба.</p>
+                </article>
+                <article class="x-card x-b2" data-rv>
+                    <div class="x-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h8M16 6h4M4 12h3M11 12h9M4 18h10M18 18h2" /><circle cx="14" cy="6" r="2" /><circle cx="9" cy="12" r="2" /><circle cx="16" cy="18" r="2" /></svg></div>
+                    <h3>Ваші правила</h3>
+                    <p>Обирайте набір питань, лише підсвітку замість кліків чи повний автопілот — усе в налаштуваннях.</p>
+                </article>
+                <article class="x-card x-b6 x-wide" data-rv>
+                    <div class="x-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" /><circle cx="12" cy="12" r="3" /></svg></div>
+                    <div>
+                        <h3>Бачите результат одразу</h3>
+                        <p>Значок на іконці розширення показує підсумок: зелене <b>OK</b> — відповіді знайдено на всі питання, <b>✓</b> — тест завершено, червоне число — скільки питань немає в базі.</p>
+                    </div>
+                    <div class="x-badges" aria-hidden="true"><span class="b-ok">OK</span><span class="b-done">✓</span><span class="b-miss">3</span></div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= ЯК ПРАЦЮЄ ======================= -->
+    <section class="x-sec" id="how">
+        <div class="x-wrap">
+            <div class="x-head" data-rv>
+                <span class="x-kicker">Як працює</span>
+                <h2>П'ять кроків за одне натискання</h2>
+                <p>Натискаєте «Усе автоматично» — розширення виконує цей ланцюжок само.</p>
+            </div>
+            <ol class="x-flow">
+                <li data-rv><b>1</b><h3>Розпізнає сторінку</h3><p>Презентація, відео чи тест?</p></li>
+                <li data-rv><b>2</b><h3>Проходить матеріал</h3><p>Гортає слайди або перемотує відео.</p></li>
+                <li data-rv><b>3</b><h3>Переходить до тесту</h3><p>«Завершити» → «Перейти до тестування» → «Почати тест».</p></li>
+                <li data-rv><b>4</b><h3>Шукає відповіді</h3><p>Порівнює питання з базою та позначає варіанти.</p></li>
+                <li data-rv><b>5</b><h3>Завершує тест</h3><p>Лише якщо знайдено відповіді на всі питання.</p></li>
+            </ol>
+            <div class="x-sync" data-rv>
+                <div class="x-node"><b>GitHub</b><span>репозиторій сайту з базою відповідей</span></div>
+                <div class="x-arrow" aria-hidden="true"><i></i></div>
+                <div class="x-node x-node-v"><b>JS Tools Ext.</b><span>зберігає базу у вашому браузері</span></div>
+                <div class="x-arrow" aria-hidden="true"><i></i></div>
+                <div class="x-node"><b>Сторінка курсу</b><span>розширення позначає відповіді</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= УСІ КНОПКИ ======================= -->
+    <section class="x-sec" id="buttons">
+        <div class="x-wrap">
+            <div class="x-head" data-rv>
+                <span class="x-kicker">Розбір інтерфейсу</span>
+                <h2>Що робить кожна кнопка</h2>
+                <p>Наводьте курсор або натискайте на елементи макета — праворуч з'явиться пояснення. Усе так само, як у справжньому розширенні.</p>
+            </div>
+
+            <div class="x-tabs" role="tablist" data-rv>
+                <button type="button" role="tab" class="is-on" data-view="main" aria-selected="true">Головний екран</button>
+                <button type="button" role="tab" data-view="settings" aria-selected="false">⚙ Налаштування</button>
+            </div>
+
+            <div class="x-guide" data-rv>
+                <div class="x-guide-mock">
+                    <!-- Значок на панелі браузера -->
+                    <div class="x-toolbar" data-pane="main" data-id="7" data-n="7" tabindex="0" aria-label="Значок на іконці">
+                        <span>Панель браузера</span>
+                        <span class="x-exticon"><img src="img/ico.png" alt="" width="22" height="22"><b class="x-badge show">3</b></span>
+                    </div>
+
+                    <!-- ГОЛОВНИЙ ЕКРАН -->
+                    <div class="pp pins" data-pane="main">
+                        <div class="pp-head">
+                            <div class="pp-brand"><img src="img/ico.png" alt="" width="22" height="22"><span><span class="accent">JS Tools</span> Ext.</span></div>
+                            <span class="pp-ghost" data-id="1" data-n="1" tabindex="0">⚙ Налаштування</span>
+                        </div>
+                        <button type="button" class="pp-btn" data-id="2" data-n="2">Що на сторінці?</button>
+                        <button type="button" class="pp-btn go" data-id="3" data-n="3">▶ Усе автоматично: матеріал → тест</button>
+                        <button type="button" class="pp-btn" data-id="4" data-n="4">Лише тест (на сторінці)</button>
+                        <button type="button" class="pp-btn stop" data-id="5" data-n="5">Стоп</button>
+                        <div class="pp-out" data-id="6" data-n="6" tabindex="0">Питань: 24<br>Знайдено відповідей: 21<br>Не знайдено в базі (3):<br>- …</div>
+                    </div>
+
+                    <!-- НАЛАШТУВАННЯ -->
+                    <div class="pp pp-wide pins" data-pane="settings" hidden>
+                        <div class="pp-title">Налаштування</div>
+                        <div class="pp-group">
+                            <h4>Тест</h4>
+                            <div class="pp-select" data-id="8" data-n="8" tabindex="0">Тест: шукати по всій базі <i>▾</i></div>
+                            <label class="pp-check" data-id="9" data-n="9" tabindex="0"><span class="box on">✓</span> Ставити відповіді автоматично</label>
+                            <label class="pp-check" data-id="10" data-n="10" tabindex="0"><span class="box on">✓</span> Автоматично «Завершити» тест</label>
+                            <small>«Завершити» натискається лише якщо відповіді знайдено на всі питання.</small>
+                        </div>
+                        <div class="pp-group">
+                            <h4>База відповідей</h4>
+                            <div class="pp-meta">База: 2026-10-14.827ab6f9 · перевірено 15.10.2026</div>
+                            <button type="button" class="pp-btn" data-id="11" data-n="11">Оновити базу з GitHub</button>
+                        </div>
+                        <div class="pp-group">
+                            <h4>Діагностика</h4>
+                            <button type="button" class="pp-btn" data-id="12" data-n="12">Діагностика тесту</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="x-legend-wrap">
+                    <ol class="x-legend" data-pane="main">
+                        <li data-id="1"><b>1</b><div><h3>⚙ Налаштування</h3><p>Розкриває праворуч панель налаштувань. Кнопка перетворюється на «✕ Закрити», закрити можна й клавішею <kbd>Esc</kbd>.</p></div></li>
+                        <li data-id="2"><b>2</b><div><h3>Що на сторінці?</h3><p>Швидка перевірка: показує, що розширення бачить на відкритій сторінці — тест (і скільки питань), презентацію чи відео. Нічого не натискає й не змінює.</p></div></li>
+                        <li data-id="3"><b>3</b><div><h3>▶ Усе автоматично: матеріал → тест</h3><p>Головна кнопка. Проходить матеріал, натискає «Завершити», «Перейти до тестування», «Почати тест», шукає відповіді й позначає їх. Якщо знайдені всі — завершує тест.</p></div></li>
+                        <li data-id="4"><b>4</b><div><h3>Лише тест (на сторінці)</h3><p>Для сторінки з питаннями, що вже відкрита: шукає відповіді в базі й позначає їх. Матеріал не проходить і тест сама не завершує.</p></div></li>
+                        <li data-id="5"><b>5</b><div><h3>Стоп</h3><p>Негайно зупиняє все, що запустило розширення: гортання слайдів, пошук відповідей, очікування тесту.</p></div></li>
+                        <li data-id="6"><b>6</b><div><h3>Поле результату</h3><p>Тут з'являється підсумок: скільки питань, скільки відповідей знайдено й які питання відсутні в базі. Їх варто допомогти вручну.</p></div></li>
+                        <li data-id="7"><b>7</b><div><h3>Значок на іконці</h3><p><b>OK</b> — відповіді знайдено на всі питання. <b>✓</b> — тест завершено. <b>Червоне число</b> — стільки питань немає в базі.</p></div></li>
+                    </ol>
+                    <ol class="x-legend" data-pane="settings" hidden>
+                        <li data-id="8"><b>8</b><div><h3>Набір питань</h3><p>За замовчуванням розширення шукає по всій базі. Можна обрати один набір (наприклад, 5S чи LEAN), якщо точно знаєте, який тест проходите.</p></div></li>
+                        <li data-id="9"><b>9</b><div><h3>Ставити відповіді автоматично</h3><p>Увімкнено — розширення само клікає по правильних варіантах. Вимкнено — лише підсвічує їх зеленим, а ви обираєте вручну.</p></div></li>
+                        <li data-id="10"><b>10</b><div><h3>Автоматично «Завершити» тест</h3><p>Натискає «Завершити», коли відповіді позначено, але лише якщо знайдено <b>всі</b> питання. Вимкніть, щоб перевіряти результат перед відправкою.</p></div></li>
+                        <li data-id="11"><b>11</b><div><h3>Оновити базу з GitHub</h3><p>Одразу завантажує свіжу базу відповідей з репозиторію сайту. Без цього розширення перевіряє оновлення само кожні кілька годин. Тут же видно версію бази.</p></div></li>
+                        <li data-id="12"><b>12</b><div><h3>Діагностика тесту</h3><p>Сервісна кнопка: показує, скільки елементів-питань бачить розширення. Якщо щось не працює, надішліть її результат автору.</p></div></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= ВСТАНОВЛЕННЯ ======================= -->
+    <section class="x-sec" id="install">
+        <div class="x-wrap">
+            <div class="x-head" data-rv>
+                <span class="x-kicker">Встановлення</span>
+                <h2>Шість кроків, одна хвилина</h2>
+                <p>Розширення не з магазину, тож ставиться в режимі розробника. Це робиться один раз.</p>
+            </div>
+            <ol class="x-timeline">
+                <li data-rv>
+                    <b>1</b>
+                    <div>
+                        <h3>Завантажте архів</h3>
+                        <p>Натисніть кнопку нижче й розпакуйте архів у постійну папку. Після встановлення її <b>не видаляйте й не переміщуйте</b>: браузер читає розширення звідти.</p>
+                        <a class="x-btn x-btn-main" href="https://github.com/Clinhfist/JS-Tools-Ext/archive/refs/heads/main.zip">Завантажити розширення</a>
+                    </div>
+                </li>
+                <li data-rv>
+                    <b>2</b>
+                    <div>
+                        <h3>Відкрийте сторінку розширень</h3>
+                        <p>Адресу не можна відкрити посиланням зі сторінки, тому скопіюйте її для свого браузера й вставте в адресний рядок:</p>
+                        <div class="x-chips">
+                            <button type="button" class="x-copy" data-copy="chrome://extensions"><code>chrome://extensions</code></button>
+                            <button type="button" class="x-copy" data-copy="brave://extensions"><code>brave://extensions</code></button>
+                            <button type="button" class="x-copy" data-copy="edge://extensions"><code>edge://extensions</code></button>
+                        </div>
+                    </div>
+                </li>
+                <li data-rv>
+                    <b>3</b>
+                    <div>
+                        <h3>Увімкніть «Режим розробника»</h3>
+                        <p>Перемикач у правому верхньому куті сторінки розширень (в Edge — зліва знизу).</p>
+                    </div>
+                </li>
+                <li data-rv>
+                    <b>4</b>
+                    <div>
+                        <h3>Завантажте розпаковане розширення</h3>
+                        <p>Натисніть <kbd>Завантажити розпаковане розширення</kbd> (Load unpacked) і виберіть папку, в якій лежить файл <code class="inline">manifest.json</code>.</p>
+                    </div>
+                </li>
+                <li data-rv>
+                    <b>5</b>
+                    <div>
+                        <h3>Закріпіть іконку</h3>
+                        <p>Натисніть значок пазла на панелі браузера й закріпіть <b>JS Tools Ext.</b>, щоб вона була завжди під рукою.</p>
+                    </div>
+                </li>
+                <li data-rv>
+                    <b>6</b>
+                    <div>
+                        <h3>Перевірте базу</h3>
+                        <p>Відкрийте розширення → <kbd>⚙ Налаштування</kbd>: у блоці «База відповідей» має бути версія. Якщо ні, натисніть <kbd>Оновити базу з GitHub</kbd>. Після встановлення оновіть відкриті вкладки (<kbd>F5</kbd>).</p>
+                    </div>
+                </li>
+            </ol>
+            <div class="x-note" data-rv>
+                📱 Розширення працює лише на комп'ютері. З телефона користуйтеся <a href="poshuk.html">сторінкою пошуку відповідей</a>.
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= FAQ ======================= -->
+    <section class="x-sec" id="faq">
+        <div class="x-wrap x-narrow">
+            <div class="x-head" data-rv>
+                <span class="x-kicker">FAQ</span>
+                <h2>Часті питання</h2>
+            </div>
+            <div class="x-faq" data-rv>
+                <details>
+                    <summary>Це безкоштовно?</summary>
+                    <p>Так. Розширення безкоштовне й не потребує реєстрації чи акаунта.</p>
+                </details>
+                <details>
+                    <summary>Чому режим розробника?</summary>
+                    <p>Розширення роздається поза магазином застосунків, тому браузер ставить його як «розпаковане». Це стандартний спосіб для власних розширень, і робити це треба один раз.</p>
+                </details>
+                <details>
+                    <summary>Які дані розширення збирає?</summary>
+                    <p>Жодних. Воно працює локально: читає сторінку курсу, щоб знайти питання, зберігає базу у вашому браузері та лише завантажує файли бази з репозиторію сайту на GitHub. Ваші дані нікуди не відправляються.</p>
+                </details>
+                <details>
+                    <summary>Як оновити розширення?</summary>
+                    <p>База відповідей оновлюється сама. Якщо вийшла нова версія самого розширення, завантажте свіжий архів, замініть файли в папці та натисніть кнопку оновлення ⟳ на картці розширення на сторінці розширень.</p>
+                </details>
+                <details>
+                    <summary>Розширення не знайшло відповіді на деякі питання</summary>
+                    <p>Такі питання відсутні в базі: їх число видно на значку іконки та в полі результату. У такому разі «Завершити» не натискається, а залишені питання варто відповісти вручну, наприклад за допомогою <a href="poshuk.html">пошуку відповідей</a>.</p>
+                </details>
+                <details>
+                    <summary>Чи працює на телефоні?</summary>
+                    <p>Ні, мобільні браузери не підтримують такі розширення. Для телефона є окрема <a href="poshuk.html">сторінка пошуку відповідей</a>.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= ФІНАЛЬНИЙ CTA ======================= -->
+    <section class="x-sec">
+        <div class="x-wrap">
+            <div class="x-final" data-rv>
+                <img src="img/ico.png" alt="" width="56" height="56">
+                <h2>Спробуйте <span class="x-grad">JS Tools Ext.</span></h2>
+                <p>Одне встановлення — і далі лише одна кнопка в popup.</p>
+                <div class="x-actions x-center">
+                    <a class="x-btn x-btn-main" href="https://github.com/Clinhfist/JS-Tools-Ext/archive/refs/heads/main.zip">Завантажити розширення</a>
+                    <a class="x-btn x-btn-ghost" href="index.html">Скрипти для консолі</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="x-foot">
+        <div class="x-wrap">Зроблено для швидкого запуску JS-скриптів у браузері · <a href="index.html">Скрипти</a> · <a href="poshuk.html">Пошук відповідей</a></div>
+    </footer>
+
 </body>
 
 </html>
