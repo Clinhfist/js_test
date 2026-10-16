@@ -21,6 +21,7 @@ const FILE_MAP = {
   "scripts/BDF.js":         { type: "quiz",   answers: "BDF" },
   "scripts/neopoz.js":      { type: "quiz",   answers: "UNKNOWN" },
   "scripts/sortuvanya.js":  { type: "quiz",   answers: "SORTING" },
+  "scripts/animal.js":       { type: "quiz",   answers: "animal" },
   "scripts/VidomistSkan.js":{ type: "quiz",   answers: "SCANNING" },
   "scripts/medicine.js":    { type: "quiz",   answers: "MEDICAL" },
   "scripts/teoria.js":      { type: "slides" },
