@@ -4,22 +4,29 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0d1117" />
+    <meta name="theme-color" content="#070a13" />
     <title>Пошук відповідей — мобільний режим</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22> >_ </text></svg>">
     <link rel="stylesheet" href="css/poshuk.css" />
     <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/site.css" />
+    <script>document.documentElement.classList.add("s-js");</script>
     <script src="js/animations.js"></script>
 </head>
 
-<body>
+<body class="s-page s-poshuk">
+    <nav class="s-nav" aria-label="Навігація">
+        <div class="s-wrap s-nav-in">
+            <a class="s-back" href="index.html" aria-label="На головну">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+            </a>
+            <a class="s-brand" href="index.html"><span class="s-mark">&gt;_</span><span class="s-bname"><span class="accent">JS Tools</span> · Пошук</span></a>
+            <a class="s-pill-link" href="extension.html">🧩 Розширення</a>
+        </div>
+    </nav>
     <header class="topbar">
         <div class="topbar-inner">
-            <h1 class="sr-only">Пошук відповіді на тест</h1>
             <div class="bar">
-                <a class="icon-btn back" href="index.html" aria-label="На головну">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
-                </a>
                 <div class="search-box">
                     <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>
                     <input id="search" class="search-input" type="search" inputmode="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Введи запитання…" aria-label="Пошук запитання" />
@@ -41,6 +48,20 @@
             </div>
         </div>
     </header>
+    <section class="s-intro" id="intro">
+        <div class="s-intro-in">
+            <div class="s-wrap">
+                <span class="s-eyebrow">// Мобільний режим</span>
+                <h1>Знайди відповідь <span class="s-grad">за секунду</span></h1>
+                <p>Введи кілька слів із запитання — і отримаєш правильну відповідь. Працює з телефону, нічого встановлювати не треба.</p>
+                <ul class="s-stats" id="dbStats">
+                    <li>Швидкий пошук</li>
+                    <li>Фільтр за темою</li>
+                    <li>Підсвітка збігів</li>
+                </ul>
+            </div>
+        </div>
+    </section>
     <main class="wrap">
         <p class="meta" id="meta"></p>
         <div class="results" id="results"></div>
@@ -64,6 +85,7 @@
   -->
     <script src="data/answers-db.js"></script>
     <script src="js/search.js"></script>
+    <script src="js/site.js"></script>
 </body>
 
 </html>
