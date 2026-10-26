@@ -24,23 +24,24 @@
     let ENTRIES = [];
 
     const CATEGORY_LABELS = {
-        LEAN: "Lean White Belt",
-        DANGER: "Небезпечні відправлення, Книга 2",
-        Book1: "Книга технології 1",
-        SORTING: "Сортування на терміналах та депо",
-        BDF: "Завантаження та вивантаження БДФ",
-        UNKNOWN: "Робота з невпізнаним вантажем",
-	"5S": "5S - Фундамент стабільності",
-        SCANNING: "Відомості сканування",
-        "animal": "Поводженню з тваринами",
-        MEDICAL: "Перша медична (MARCH)",
-    };
+    LEAN: "Lean White Belt",
+    DANGER: "Небезпечні відправлення, Книга 2",
+    Book1: "Книга технології 1",
+    SORTING: "Сортування на терміналах та депо",
+    BDF: "Завантаження та вивантаження БДФ",
+    Obr: "Навчання вимогам до виготовлення обрешетування",
+    UNKNOWN: "Робота з невпізнаним вантажем",
+    "5S": "5S - Фундамент стабільності",
+    SCANNING: "Відомості сканування",
+    "animal": "Поводженню з тваринами",
+    MEDICAL: "Перша медична (MARCH)",
+};
 
     function buildEntries(db) {
         const entries = [];
 
         // Категорії типу "питання -> відповідь"
-        ["LEAN", "DANGER", "Book1", "SORTING", "5S", "animal", "BDF", "UNKNOWN", "SCANNING"].forEach((key) => {
+        ["LEAN", "Obr","DANGER", "Book1", "SORTING", "5S", "animal", "BDF", "UNKNOWN", "SCANNING"].forEach((key) => {
             const obj = db[key] || {};
             const cat = CATEGORY_LABELS[key];
             Object.entries(obj).forEach(([q, a]) => {
