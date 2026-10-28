@@ -224,7 +224,7 @@
     /* ---------- Тема (категорія) ---------- */
     function setCategory(cat) {
         activeCat = cat;
-        [...chipsEl.children].forEach((c) => c.classList.toggle("active", c.dataset.cat === cat));
+        chipsEl.querySelectorAll(".chip").forEach((c) => c.classList.toggle("active", c.dataset.cat === cat));
 
         const filtered = cat !== "Всі";
         filterRowEl.classList.toggle("show", filtered);
@@ -234,10 +234,13 @@
         render(searchEl.value);
     }
 
-    function buildChips() {
+        function buildChips() {
         const catList = ["Всі", ...Array.from(new Set(ENTRIES.map((e) => e.cat)))];
         catList.forEach((cat) => {
             const count = cat === "Всі" ? ENTRIES.length : ENTRIES.filter((e) => e.cat === cat).length;
+
+            const row = document.createElement("div");
+            row.className = "chip-row";
 
             const b = document.createElement("button");
             b.type = "button";
@@ -258,7 +261,19 @@
                 setCategory(cat);
                 closeSheet();
             });
-            chipsEl.appendChild(b);
+
+            // Кнопка «Копіювати»: усі питання й відповіді теми в буфер обміну (панель не закривається)
+            const cp = document.createElement("button");
+            cp.type = "button";
+            cp.className = "chip-copy";
+            cp.dataset.label = "Копіювати";
+            cp.textContent = "Копіювати";
+            cp.setAttribute("aria-label", "Скопіювати питання та відповіді: " + (cat === "Всі" ? "усі теми" : cat));
+            cp.addEventListener("click", () => copyText(topicToText(cat), cp));
+
+            row.appendChild(b);
+            row.appendChild(cp);
+            chipsEl.appendChild(row);
         });
     }
 
@@ -367,6 +382,17 @@
         });
 
         render("");
+    }
+    // Копіювання теми: у буфер потрапляє по рядку «питання: відповідь».
+    // Роздільник можна змінити тут (наприклад, " | " або ":").
+    const COPY_SEPARATOR = ": ";
+
+    function topicToText(cat) {
+        const list = cat === "Всі" ? ENTRIES : ENTRIES.filter((e) => e.cat === cat);
+        const oneLine = (t) => (t || "").replace(/\s*\n+\s*/g, " / ").trim();
+        return list
+            .map((e) => (e.q ? oneLine(e.q) + COPY_SEPARATOR + oneLine(e.a) : oneLine(e.a))) // медичні — лише відповідь
+            .join("\n");
     }
 
     init();
