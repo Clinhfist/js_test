@@ -1,0 +1,17 @@
+{
+ "quiz": {
+  "question": "[data-field=\"questionText\"]",
+  "option": "[data-field=\"optionText\"], .text.resizeable-text",
+  "card": ".question-card",
+  "delayMs": 100
+ },
+ "slides": {
+  "next": "#next",
+  "interactive": "button.acc-button",
+  "submit": "#submit",
+  "finishText": "Завершити курс",
+  "nextDelay": 1500,
+  "buttonDelay": 1000,
+  "autoSubmit": false
+ }
+}

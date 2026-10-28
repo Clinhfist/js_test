@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS Test Tools</title>
+    <link rel="icon" href="img/ico.png" />
+    <meta name="description" content="Коротка інструкція, як запускати JavaScript у консолі браузера, та готові скрипти для копіювання в один клік." />
+    <meta name="theme-color" content="#070a13" />
+    <script>
+    document.documentElement.classList.add("s-js");
+    </script>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/site.css" />
+    <script src="js/animations.js"></script>
+</head>
+
+<body class="s-page s-index">
+    <!-- ======================= НАВІГАЦІЯ ======================= -->
+    <nav class="s-nav" aria-label="Навігація сторінки">
+        <div class="s-wrap s-nav-in">
+            <a class="s-brand" href="#top"><span class="s-mark">&gt;_</span><span class="s-bname"><span class="accent">JS Tools</span></span></a>
+            <div class="s-links">
+                <a href="#how">Інструкція</a>
+                <a href="#extension" class="s-ext">Розширення</a>
+                <a href="#scripts">Скрипти</a>
+                <a href="poshuk.html">Пошук з телефону</a>
+            </div>
+            <a class="s-cta" href="extension.html">🧩 Розширення</a>
+        </div>
+    </nav>
+    <!-- ======================= HERO ======================= -->
+    <header class="s-hero" id="top">
+        <div class="s-wrap s-hero-grid">
+            <div class="s-hero-copy">
+                <span id="secret-badge" class="s-eyebrow" style="cursor: pointer; user-select: none;">// JavaScript у console</span>
+                <h1>Готові <span class="s-grad">JS Tools</span> для запуску в консолі</h1>
+                <p class="s-lead">Коротка інструкція та колекція JS-скриптів для швидкого тестування. Скопіюй потрібний скрипт в один клік і встав у консоль браузера.</p>
+                <div class="s-actions">
+                    <a class="s-btn s-btn-main" href="#scripts">Перейти до скриптів ↓</a>
+                    <a class="s-btn s-btn-ghost" href="poshuk.html">📱 Пошук відповідей (з телефону)</a>
+                </div>
+                <ul class="s-trust" id="scriptStats">
+                    <li>Готові скрипти</li>
+                    <li>Копіювання в один клік</li>
+                    <li>Без встановлення</li>
+                </ul>
+                <!-- Кнопка розширення: у бейджі підставляється версія з data/version.json (див. js/site.js) -->
+                <a class="s-promo" href="extension.html">
+                    <span class="s-promo-ico">&gt;_</span>
+                    <span class="s-promo-text"><b>JS Tools Ext. — Браузерне розширення</b><small>Усе в один клік, без консолі</small></span>
+                    <span class="s-badge-v" data-ext-version>Реліз</span>
+                    <span class="s-promo-arrow" aria-hidden="true">→</span>
+                </a>
+            </div>
+            <!-- Демо: консоль із запуском скрипта -->
+            <div class="s-demo" aria-hidden="true">
+                <div class="s-orb"></div>
+                <div class="s-console">
+                    <div class="s-con-bar"><i></i><i></i><i></i><span class="s-tabs"><b>Elements</b><b class="on">Console</b><b>Network</b></span></div>
+                    <div class="s-con-body" id="conOut"></div>
+                </div>
+                <span class="s-chip s-chip-1" id="conChip">✓ Готово</span>
+                <span class="s-chip s-chip-2">📋 Скопійовано!</span>
+            </div>
+        </div>
+    </header>
+    <!-- ======================= ІНСТРУКЦІЯ ======================= -->
+    <section class="s-sec" id="how">
+        <div class="s-wrap">
+            <div class="s-head" data-rv>
+                <span class="s-kicker">Інструкція</span>
+                <h2>Як запустити скрипт</h2>
+                <p>Через консоль розробника (DevTools). Займе кілька секунд.</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div>
+                        <h3>Відкрий консоль</h3>
+                        <p>Натисни <kbd>F12</kbd> (або <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>J</kbd>, на Mac — <kbd>Cmd</kbd>+<kbd>Option</kbd>+<kbd>J</kbd>) і перейди на вкладку <b>Console</b>.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div>
+                        <h3>Скопіюй скрипт</h3>
+                        <p>Нижче обери потрібний скрипт і натисни кнопку <b>Копіювати</b>.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div>
+                        <h3>Встав у консоль</h3>
+                        <p>Клікни в поле консолі та встав код: <kbd>Ctrl</kbd>+<kbd>V</kbd> (на Mac — <kbd>Cmd</kbd>+<kbd>V</kbd>).</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div>
+                        <h3>Запусти</h3>
+                        <p>Натисни <kbd>Enter</kbd> — скрипт виконається одразу на поточній сторінці.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="warning">
+                ⚠ Не вставляй у консоль код, якого не розумієш або який тобі надіслали незнайомці. Це може дати доступ до твоїх акаунтів.
+            </div>
+        </div>
+    </section>
+    <!-- ======================= РОЗШИРЕННЯ ======================= -->
+    <section class="s-sec" id="extension" style="padding-top: 0;">
+        <div class="s-wrap">
+            <div class="s-extband" data-rv>
+                <div>
+                    <span class="s-badge-v" data-ext-version>Реліз</span>
+                    <h2>Не хочеться щоразу копіювати скрипти?</h2>
+                    <p>Розширення <b>JS Tools Ext.</b> робить усе саме: розпізнає, що відкрито, проводить до тесту та позначає відповіді з бази. Одна кнопка замість шести кроків.</p>
+                    <a class="s-btn s-btn-violet" href="extension.html">Детальніше про розширення →</a>
+                </div>
+                <ul class="s-extlist">
+                    <li>Саме визначає презентацію, відео чи тест</li>
+                    <li>Позначає відповіді з бази одним натисканням</li>
+                    <li>База оновлюється з GitHub автоматично</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <!-- ======================= СКРИПТИ ======================= -->
+    <section class="s-sec" id="scripts" style="padding-top: 0;">
+        <div class="s-wrap">
+            <div class="s-head" data-rv>
+                <span class="s-kicker">Колекція</span>
+                <h2>Готові скрипти</h2>
+                <p>Згруповані за категоріями. Натисни «Копіювати» і встав у консоль на потрібній сторінці запущеного тесту. Всі скрипти — автоматично обирають правильну відповідь.</p>
+            </div>
+            <div id="cards"></div>
+        </div>
+    </section>
+    <footer class="s-foot">
+        <div class="s-wrap">Зроблено для швидкого запуску JS-скриптів у браузері · <a href="extension.html">Розширення</a> · <a href="poshuk.html">Пошук відповідей</a></div>
+    </footer>
+    <!--
+    База скриптів винесена в data/scripts-db.js — це окрема "база знань"
+    цієї сторінки. Щоб додати свій скрипт, відредагуй масив SCRIPTS_DB:
+    додай об'єкт { category, tag, title, desc, code }.
+  -->
+    <script src="data/scripts-db.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/site.js"></script>
+</body>
+
+</html>

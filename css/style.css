@@ -1,0 +1,535 @@
+/* ============================================================
+   ЗМІННІ ТЕМИ (GitHub Dark Inspired)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+
+:root {
+    --bg: #070a13;
+    /* Глибокий темний фон (нічне небо) */
+    --card: #161b22;
+    /* Фон карток */
+    --card-2: #21262d;
+    /* Дрібні елементи, плашки, кнопки */
+    --text: #c9d1d9;
+    /* М'який білий колір для основного тексту */
+    --text-bright: #f0f6fc;
+    /* Заголовки */
+    --muted: #8b949e;
+    /* Приглушений сірий */
+    --accent: #238636;
+    /* Стриманий зелений для головних дій */
+    --accent-hover: #2ea043;
+    --border: #30363d;
+    /* Акуратні темні рамки */
+    --radius: 10px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6 -webkit-font-smoothing: antialiased;
+}
+
+code,
+pre,
+.mono {
+    font-family: "Fira Code", "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+.container {
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ============================================================
+   СТИЛІЗАЦІЯ СКРОЛБАРІВ (Забирає системні білі рамки)
+   ============================================================ */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0d1117;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #484f58;
+}
+
+/* Спеціальний скролбар для блоків коду <pre> */
+pre::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+}
+
+pre::-webkit-scrollbar-track {
+    background: #0d1117 !important;
+}
+
+pre::-webkit-scrollbar-thumb {
+    background: #30363d !important;
+    border-radius: 4px;
+    border: none !important;
+}
+
+pre::-webkit-scrollbar-thumb:hover {
+    background: #484f58 !important;
+}
+
+/* ============================================================
+   HERO СЕКЦІЯ ТА КНОПКИ
+   ============================================================ */
+.hero {
+    text-align: center;
+    padding: 64px 0 40px;
+}
+
+.badge {
+    display: inline-block;
+    font-size: 13px;
+    color: #58a6ff;
+    background: rgba(56, 139, 253, 0.1);
+    border: 1px solid rgba(56, 139, 253, 0.3);
+    padding: 5px 14px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    color: var(--text-bright);
+    font-size: clamp(28px, 6vw, 42px);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+}
+
+.hero h1 .accent {
+    color: #58a6ff;
+}
+
+.hero p {
+    color: var(--muted);
+    font-size: 16px;
+    max-width: 560px;
+    margin: 0 auto 28px;
+}
+
+/* Базова кнопка */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--card-2);
+    color: var(--text-bright);
+    font-weight: 600;
+    text-decoration: none;
+    padding: 10px 18px;
+    margin: 6px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-size: 14.5px;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+    background: #30363d;
+    border-color: #8b949e;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Головна акцентна кнопка */
+.btn-primary {
+    background: var(--accent);
+    border-color: rgba(240, 246, 254, 0.1);
+    box-shadow: 0 4px 14px rgba(35, 134, 54, 0.35);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background: var(--accent-hover);
+    border-color: rgba(240, 246, 254, 0.2);
+    box-shadow: 0 10px 20px rgba(46, 160, 67, 0.45);
+}
+
+/*Кнопка на розширення*/
+.btn-ext-neon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, rgba(30, 27, 75, 0.8), rgba(15, 23, 42, 0.9));
+    color: #f0f6fc;
+    font-weight: 600;
+    padding: 12px 22px;
+    border-radius: 12px;
+    border: 1px solid rgba(167, 139, 250, 0.4);
+    text-decoration: none;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: neonPulse 3s infinite;
+    margin: 6px;
+}
+
+.btn-ext-neon .ext-icon {
+    font-family: "Fira Code", monospace;
+    color: #a78bfa;
+    font-weight: 700;
+}
+
+.btn-ext-neon .ext-badge {
+    font-size: 11px;
+    background: rgba(167, 139, 250, 0.2);
+    color: #c4b5fd;
+    border: 1px solid rgba(167, 139, 250, 0.4);
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: 4px;
+}
+
+.btn-ext-neon:hover {
+    background: linear-gradient(135deg, rgba(49, 46, 129, 0.9), rgba(30, 27, 75, 0.95));
+    border-color: #a78bfa;
+    transform: translateY(-3px);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.4), 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes neonPulse {
+    0% {
+        border-color: rgba(167, 139, 250, 0.4);
+        box-shadow: 0 0 15px rgba(139, 92, 246, 0.15);
+    }
+
+    50% {
+        border-color: rgba(167, 139, 250, 0.8);
+        box-shadow: 0 0 25px rgba(139, 92, 246, 0.35);
+    }
+
+    100% {
+        border-color: rgba(167, 139, 250, 0.4);
+        box-shadow: 0 0 15px rgba(139, 92, 246, 0.15);
+    }
+}
+
+/* ============================================================
+   СЕКЦІЇ ТА ІНСТРУКЦІЯ
+   ============================================================ */
+section {
+    padding: 28px 0;
+}
+
+.section-title {
+    color: var(--text-bright);
+    font-size: 22px;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+}
+
+.section-sub {
+    color: var(--muted);
+    margin-bottom: 24px;
+    font-size: 14.5px;
+}
+
+.steps {
+    display: grid;
+    gap: 12px;
+}
+
+.step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+}
+
+.step-num {
+    flex: none;
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    background: var(--card-2);
+    color: #58a6ff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-weight: 700;
+    font-family: monospace;
+}
+
+.step h3 {
+    color: var(--text-bright);
+    font-size: 15.5px;
+    margin-bottom: 2px;
+}
+
+.step p {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.step kbd {
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 12.5px;
+    color: var(--text-bright);
+    box-shadow: 0 2px 0 var(--border);
+    font-family: inherit;
+    font-weight: 600;
+}
+
+.warning {
+    margin-top: 18px;
+    background: rgba(187, 128, 9, 0.1);
+    border: 1px solid rgba(187, 128, 9, 0.3);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    font-size: 13.5px;
+    color: #d29922;
+}
+
+/* ============================================================
+   КАТЕГОРІЇ ТА КАРТКИ СКРИПТІВ
+   ============================================================ */
+.cat-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #58a6ff;
+    margin: 32px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+}
+
+.cat-title:first-child {
+    margin-top: 0;
+}
+
+#cards {
+    display: grid;
+    gap: 16px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    border-color: #58a6ff;
+}
+
+.card-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px 16px;
+    padding: 16px 18px;
+}
+
+.card-head>div:first-child {
+    min-width: 0;
+    flex: 1 1 200px;
+}
+
+.card-head h3 {
+    color: var(--text-bright);
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.card-head p {
+    color: var(--muted);
+    font-size: 13.5px;
+}
+
+/* Контейнер для бейджа та кнопки "Копіювати" */
+.card-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.tag {
+    font-size: 12px;
+    color: #58a6ff;
+    background: rgba(56, 139, 253, 0.1);
+    border: 1px solid rgba(56, 139, 253, 0.3);
+    padding: 3px 9px;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.copy-btn {
+    position: static;
+    background: var(--card-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.copy-btn:hover {
+    background: #30363d;
+    color: var(--text-bright);
+    border-color: #8b949e;
+}
+
+.copy-btn.copied {
+    background: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
+}
+
+/* ============================================================
+   БЛОКИ З КОДОМ ТА КНОПКА РОЗГОРТАННЯ
+   ============================================================ */
+.code-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+pre {
+    background: #0d1117 !important;
+    border: none !important;
+    border-top: 1px solid var(--border) !important;
+    outline: none !important;
+    box-shadow: none !important;
+    padding: 16px 18px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #c9d1d9;
+    white-space: pre;
+    max-height: 320px;
+}
+
+/* Кнопка розгортання/згортання коду */
+.toggle-btn {
+    width: 100%;
+    background: var(--card-2);
+    color: var(--text);
+    border: none;
+    border-top: 1px solid var(--border);
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.toggle-btn:hover {
+    background: #30363d;
+    color: var(--text-bright);
+}
+
+/* Приховати pre у згорнутому стані */
+.code-wrap.collapsed pre {
+    display: none !important;
+}
+
+footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+}
+
+/* ============================================================
+   МОБІЛЬНА АДАПТИВНІСТЬ (компактно: лише те, що реально «пливе»)
+   ============================================================ */
+@media (max-width: 640px) {
+
+    .container {
+        padding: 0 14px;
+    }
+
+    .hero {
+        padding: 40px 0 28px;
+    }
+
+    .btn {
+        margin: 5px 3px;
+        padding: 10px 14px;
+    }
+
+    .step {
+        flex-wrap: wrap;
+        padding: 14px;
+    }
+
+    .card-head {
+        padding: 14px;
+    }
+
+    .card-actions {
+        flex-wrap: wrap;
+    }
+
+    pre {
+        font-size: 12.5px;
+        padding: 14px;
+    }
+}
+
+@media (max-width: 380px) {
+    .hero h1 {
+        font-size: 24px;
+    }
+
+    .btn {
+        display: block;
+        width: 100%;
+        margin: 6px 0;
+    }
+}
